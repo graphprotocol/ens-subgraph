@@ -1,0 +1,6 @@
+{
+  "extend": "./node_modules/graph-cli/tsconfig.json",
+  "compilerOptions": {
+    "types": ["graph-cli"]
+  }
+}

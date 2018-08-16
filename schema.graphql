@@ -1,0 +1,30 @@
+type Entry {
+  hash: Bytes
+  owner: BigInt
+  value: BigInt
+  registrationDate: BigInt
+}
+
+type Auction {
+  hash: Bytes
+  registrationDate: BigInt
+}
+
+
+# type Record {
+#   owner: Bytes
+#   resolver: Bytes
+#   ttl: BigInt
+# }
+
+# type Deed {
+#     address public registrar;
+#     address constant burn = 0xdead;
+#     uint public creationDate;
+#     address public owner;
+#     address public previousOwner;
+#     uint public value;
+#     event OwnerChanged(address newOwner);
+#     event DeedClosed();
+#     bool active;
+# }

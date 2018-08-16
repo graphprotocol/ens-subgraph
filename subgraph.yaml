@@ -1,0 +1,26 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+- kind: ethereum/contract
+  name: ENSRegistrar
+  source:
+    address: "6090A6e47849629b7245Dfa1Ca21D94cd15878Ef"
+    abi: Registrar
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    file: ./mappings/ensRegistrar.ts
+    entities:
+    - Entry
+    - Auction
+    abis:
+    - name: Registrar
+      file: ./abis/ensRegistrar.json
+    eventHandlers:
+    - event: HashRegistered(bytes32,address,uint256,uint256)
+      handler: hashRegistered
+    - event: HashReleased(bytes32,uint256)
+      handler: hashReleased
+

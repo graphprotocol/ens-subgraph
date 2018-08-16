@@ -1,0 +1,12 @@
+{
+  "name": "decentraland",
+  "scripts": {
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
+    "build-wast": "graph build -t wast subgraph.yaml"
+  },
+  "devDependencies": {
+    "graph-cli": "ssh://git@github.com:graphprotocol/graph-cli.git"
+  }
+}
