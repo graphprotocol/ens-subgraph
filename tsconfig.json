@@ -1,6 +1,6 @@
 {
   "extend": "./node_modules/graph-cli/tsconfig.json",
-  "files": ["ENS.ts"],
+  "files": ["EnsRegistrar2.ts"],
   "compilerOptions": {
     "types": ["graph-cli"]
   }

@@ -20,6 +20,6 @@ dataSources:
       file: ./abis/EnsRegistrar2.json
     eventHandlers:
     - event: Transfer(bytes32,address)
-      handler: 
+      handler: transfer
     - event: NewOwner(bytes32,bytes32,address)
-      handler: hashReleased
+      handler: newOwner

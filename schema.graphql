@@ -1,15 +1,26 @@
-type Entry @entity {
-  hash: Bytes
-  owner: BigInt
-  value: BigInt
-  registrationDate: BigInt
+type Domain @entity {
+  domainHash: Bytes!
+  ownerAddr: Bytes!
 }
 
-type Auction @entity {
-  hash: Bytes
-  registrationDate: BigInt
+type SubDomain @entity {
+  domainHash: Bytes!
+  subDomainHash: Bytes!
+  ownerAddr: Bytes!
 }
 
+# OLD, WILL DELETE SOON
+# type Entry @entity {
+#   hash: Bytes
+#   owner: BigInt
+#   value: BigInt
+#   registrationDate: BigInt
+# }
+
+# type Auction @entity {
+#   hash: Bytes
+#   registrationDate: BigInt
+# }
 
 # type Record @entity {
 #   owner: Bytes
