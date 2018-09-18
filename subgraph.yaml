@@ -11,16 +11,15 @@ dataSources:
     kind: ethereum/events
     apiVersion: 0.0.1
     language: wasm/assemblyscript
-    file: ./mappings/ensRegistrar.ts
+    file: ./mappings/EnsRegistrar2.ts
     entities:
     - Entry
     - Auction
     abis:
     - name: Registrar
-      file: ./abis/ensRegistrar.json
+      file: ./abis/EnsRegistrar2.json
     eventHandlers:
-    - event: HashRegistered(bytes32,address,uint256,uint256)
-      handler: hashRegistered
-    - event: HashReleased(bytes32,uint256)
+    - event: Transfer(bytes32,address)
+      handler: 
+    - event: NewOwner(bytes32,bytes32,address)
       handler: hashReleased
-
