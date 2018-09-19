@@ -1,29 +1,31 @@
-export function hashRegistered(event: HashRegistered): void {
+export function transfer(event: Transfer): void {
+  let domain = new Entity()
 
-  // Get param data from challenge succeeded event
-  let hash = event.params.hash.toHex()
-  let owner = event.params.owner
-  let value = event.params.value
-  let date = event.params.registrationDate
 
-  // Create fail entity
-  let entry = new Entity()
-  entry.setString('hash', hash)
-  entry.setU256('value', value)
-  entry.setAddress('owner', owner)
-  entry.setU256('date', date)
+  // let auctionID = Auction.bind(event.address, event.blockHash).uniqueID()
 
-  // Apply store updates
-  store.set('Entry', hash, entry)
+  domain.setAddress('owner', event.params.owner)
+  domain.setString('node', event.params.node)
+
+
+  store.set('Domain', event.params.node, domain)
+
 }
 
-export function hashReleased(event: HashReleased): void {
-  let hash = event.params.hash.toHex()
-  let value = event.params.value
+export function newOwner(event: NewOwner): void {
+  let subdomain = new Entity()
 
-  let entry = new Entity()
-  entry.setString('hash', hash)
-  entry.setU256('value', value)
+    // let auctionID = Auction.bind(event.address, event.blockHash).uniqueID()
 
-  store.set('Entry', hash, entry)
+  subdomain.setAddress('owner', event.params.owner)
+  subdomain.setString('node', event.params.node)
+  subdomain.setString('label', event.params.label)
+
+
+  //might neeed to hex the id tuype 
+  store.set('Subdomain', event.params.node, subdomain)
+
+  
 }
+
+

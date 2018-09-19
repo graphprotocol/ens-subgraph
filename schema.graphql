@@ -1,41 +1,29 @@
 type Domain @entity {
   domainHash: Bytes!
+  domainName: String!
   ownerAddr: Bytes!
+  timeToLive: Int!
 }
 
 type SubDomain @entity {
   domainHash: Bytes!
   subDomainHash: Bytes!
   ownerAddr: Bytes!
+  timeToLive: Int!
 }
 
-# OLD, WILL DELETE SOON
-# type Entry @entity {
-#   hash: Bytes
-#   owner: BigInt
-#   value: BigInt
-#   registrationDate: BigInt
+# Not needed right now for POC 
+
+# type DomainAuction @entity {
+#   domainHash: Bytes!
+#   startTime: Int!
+#   revealTime: Int
+#   registeredTime: Int
+#   bids: [DomainBids!]!
 # }
 
-# type Auction @entity {
-#   hash: Bytes
-#   registrationDate: BigInt
-# }
-
-# type Record @entity {
-#   owner: Bytes
-#   resolver: Bytes
-#   ttl: BigInt
-# }
-
-# type Deed @entity {
-#     address public registrar;
-#     address constant burn = 0xdead;
-#     uint public creationDate;
-#     address public owner;
-#     address public previousOwner;
-#     uint public value;
-#     event OwnerChanged(address newOwner);
-#     event DeedClosed();
-#     bool active;
+# type DomainBids @entity {
+#   domainHash: Bytes!
+#   bidder: Bytes!
+#   deposit: Int!
 # }

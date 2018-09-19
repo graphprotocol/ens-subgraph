@@ -4,7 +4,8 @@
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
-    "build-wast": "graph build -t wast subgraph.yaml"
+    "build-wast": "graph build -t wast subgraph.yaml",
+    "deploy": "graph deploy --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml --node http://127.0.0.1:8020/  --verbosity debug -n \"cli\""
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.2.5"

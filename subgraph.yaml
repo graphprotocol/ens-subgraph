@@ -13,8 +13,8 @@ dataSources:
     language: wasm/assemblyscript
     file: ./mappings/EnsRegistrar2.ts
     entities:
-    - Entry
-    - Auction
+    - Domain
+    - SubDomain
     abis:
     - name: Registrar
       file: ./abis/EnsRegistrar2.json
