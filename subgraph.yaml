@@ -5,19 +5,19 @@ dataSources:
 - kind: ethereum/contract
   name: ENSRegistrar
   source:
-    address: "6090A6e47849629b7245Dfa1Ca21D94cd15878Ef"
-    abi: Registrar
+    address: "314159265dd8dbb310642f98f50c066173c1259b"
+    abi: EnsRegistrar
   mapping:
     kind: ethereum/events
     apiVersion: 0.0.1
     language: wasm/assemblyscript
-    file: ./mappings/EnsRegistrar2.ts
+    file: ./mappings/EnsRegistrar.ts
     entities:
     - Domain
     - SubDomain
     abis:
     - name: Registrar
-      file: ./abis/EnsRegistrar2.json
+      file: ./abis/EnsRegistrar.json
     eventHandlers:
     - event: Transfer(bytes32,address)
       handler: transfer
