@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.2.5"
+  },
+  "dependencies": {
+    "eth-ens-namehash": "^2.0.8"
   }
 }

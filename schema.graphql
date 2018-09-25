@@ -1,15 +1,12 @@
 type Domain @entity {
-  domainHash: Bytes!
-  domainName: String!
-  ownerAddr: Bytes!
-  timeToLive: Int!
+  domainHash: Bytes
+  ownerAddr: Bytes
 }
 
 type SubDomain @entity {
-  domainHash: Bytes!
-  subDomainHash: Bytes!
-  ownerAddr: Bytes!
-  timeToLive: Int!
+  domainHash: Bytes
+  subDomainHash: Bytes
+  ownerAddr: Bytes
 }
 
 # Not needed right now for POC 
@@ -26,4 +23,12 @@ type SubDomain @entity {
 #   domainHash: Bytes!
 #   bidder: Bytes!
 #   deposit: Int!
+# }
+
+
+# type Domain @entity {
+#   domainHash: Bytes!
+#   ownerAddr: Bytes!
+  # domainName: String!
+  # timeToLive: Int!
 # }

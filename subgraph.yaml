@@ -16,8 +16,8 @@ dataSources:
     - Domain
     - SubDomain
     abis:
-    - name: Registrar
-      file: ./abis/EnsRegistrar.json
+    - name: EnsRegistrar
+      file: ./abis/EtherscanAbi.json
     eventHandlers:
     - event: Transfer(bytes32,address)
       handler: transfer
