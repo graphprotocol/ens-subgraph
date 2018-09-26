@@ -1,13 +1,21 @@
-type Domain @entity {
-  domainHash: Bytes
-  ownerAddr: Bytes
+# type Domain @entity {
+#   domainHash: Bytes
+#   ownerAddr: Bytes
+# }
+
+# type SubDomain @entity {
+#   domainHash: Bytes
+#   subDomainHash: Bytes
+#   ownerAddr: Bytes
+# }
+
+type EnsDomain @entity {
+  id: ID! # id is the nameHash
+  node: Bytes # only for subdomains
+  label: Bytes # only for subdomains 
+  owner: Bytes!
 }
 
-type SubDomain @entity {
-  domainHash: Bytes
-  subDomainHash: Bytes
-  ownerAddr: Bytes
-}
 
 # Not needed right now for POC 
 

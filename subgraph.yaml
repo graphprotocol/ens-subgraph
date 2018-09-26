@@ -13,8 +13,7 @@ dataSources:
     language: wasm/assemblyscript
     file: ./mappings/EnsRegistrar.ts
     entities:
-    - Domain
-    - SubDomain
+    - EnsDomain
     abis:
     - name: EnsRegistrar
       file: ./abis/EtherscanAbi.json
