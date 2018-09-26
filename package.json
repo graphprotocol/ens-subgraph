@@ -8,7 +8,7 @@
     "deploy": "graph deploy --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml --node http://127.0.0.1:8020/  --verbosity debug -n \"cli\""
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.2.5"
+    "@graphprotocol/graph-cli": "^0.2.8"
   },
   "dependencies": {
     "eth-ens-namehash": "^2.0.8",
