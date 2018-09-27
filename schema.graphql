@@ -1,11 +1,6 @@
 type EnsDomain @entity {
-  id: ID! # id is the nameHash of the actual domain 
+  id: ID! # id is the nameHash of the actual domain
   node: Bytes # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
   label: Bytes # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth 
   owner: Bytes!
-}
-
-type Transfer @entity {
-  id: ID! # id is the node/domain
-  owners: [Bytes] # each time a domain is transferred, the new owner is updated.
 }

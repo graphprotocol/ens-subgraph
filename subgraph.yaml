@@ -14,7 +14,6 @@ dataSources:
     file: ./mappings/EnsRegistrar.ts
     entities:
     - EnsDomain
-    - Transfer
     abis:
     - name: EnsRegistrar
       file: ./abis/EtherscanAbi.json

@@ -100,18 +100,3 @@ This comes in handy when there is a user who has registered potentially 100's of
 ```
 
 Querying this account will show that it owns many domains. You can double check on etherscan, and see that this is an active ens registrar account https://etherscan.io/address/0xc73C21952577366A0fBfD62B461Aeb5305801157
-
-### Searching Transfer events
-
-This just queries all transfer events in order of the domain hash (i.e. id):
-
-```
-{
-  transfers(orderBy: id) {
-    id
-    owner
-  }
-}
-```
-
-Note that there are much fewer Transfer events sourced than NewOwner events. This is because many names have been registered, but only a small group of them have had their ownership changed. 
