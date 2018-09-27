@@ -1,42 +1,11 @@
-# type Domain @entity {
-#   domainHash: Bytes
-#   ownerAddr: Bytes
-# }
-
-# type SubDomain @entity {
-#   domainHash: Bytes
-#   subDomainHash: Bytes
-#   ownerAddr: Bytes
-# }
-
 type EnsDomain @entity {
-  id: ID! # id is the nameHash
-  node: Bytes # only for subdomains
-  label: Bytes # only for subdomains 
+  id: ID! # id is the nameHash of the actual domain 
+  node: Bytes # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
+  label: Bytes # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth 
   owner: Bytes!
 }
 
-
-# Not needed right now for POC 
-
-# type DomainAuction @entity {
-#   domainHash: Bytes!
-#   startTime: Int!
-#   revealTime: Int
-#   registeredTime: Int
-#   bids: [DomainBids!]!
-# }
-
-# type DomainBids @entity {
-#   domainHash: Bytes!
-#   bidder: Bytes!
-#   deposit: Int!
-# }
-
-
-# type Domain @entity {
-#   domainHash: Bytes!
-#   ownerAddr: Bytes!
-  # domainName: String!
-  # timeToLive: Int!
-# }
+type Transfer @entity {
+  id: ID! # id is the node/domain
+  owner: Bytes # each time a domain is transferred, the new owner is updated. (would be nice to show an array of all of changes for a particular node )
+}

@@ -1,3 +1,5 @@
+//this is just for testing that our sha3 for node works 
+
 var namehash = require('eth-ens-namehash')
 var web3 = require("web3")
 // Also supports normalizing strings to ENS compatibility:
@@ -35,7 +37,7 @@ var remove0x = hash2.substring(2)
 // var buildFromLabelAndNode = web3.utils.soliditySha3(remove0x + labelHash4)
 // var hardcide = web3.utils.soliditySha3("200a4ff549fd75c2b282f412e84fdaf57a1b1d45e21ea2b551951c871dff12b7" + "4f5b812789fc606be1b3b16908db13fc7a9adf7ca72641f84d75b47069d3d7f0" )
 
-var subdomain4 =  namehash.subdomain(remove0x, labelHash4)
+// var subdomain4 =  namehash.subdomain(remove0x, labelHash4)
 
 console.log("\n")
 console.log(string1 + " : " + hash1 + "\n")
@@ -50,6 +52,6 @@ console.log("remove 0x and get hash of mywallet.eth: " + remove0x)
 // console.log(buildFromLabelAndNode)
 // console.log("HARCOED: " + hardcide)
 
-console.log("richard.mywallet.eth subdomain: " + subdomain4)
+// console.log("richard.mywallet.eth subdomain: " + subdomain4)
 
 
