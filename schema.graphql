@@ -7,5 +7,5 @@ type EnsDomain @entity {
 
 type Transfer @entity {
   id: ID! # id is the node/domain
-  owner: Bytes # each time a domain is transferred, the new owner is updated. (would be nice to show an array of all of changes for a particular node )
+  owners: [Bytes] # each time a domain is transferred, the new owner is updated.
 }

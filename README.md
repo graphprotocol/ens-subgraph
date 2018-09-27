@@ -15,6 +15,7 @@ The ABI was taken from https://etherscan.io/address/0x314159265dd8dbb310642f98f5
 
 Whenever `setSubnodeOwner` event `NewOwner` are emitted, the Graph Node will store this value as an entity `EnsDomain`. It processes blocks in ascending order. `setOwner()` will be stored as a new entity `Tranfer`. `setOwner()` will also update the owner attritbute of the `EnsDomain` entity the transfer is associated with. 
 
+This subgraph has `keccak-256` (a.k.a `sha3` on Ethereum) imported from Rust, which compiles down to WASM, and therefore can be used with mappings. This is needed because the event `setSubnodeOwner` does not emit the actual domain hash, it emits two `bytes32` values that are then used with `sha3(node, label)` to create the domain hash. More detail can be found by reading into the [namehash alogorithm](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md). This allows for all domains to be stored in the subgraph with their unique `id` as the domain hash. 
 
 ## Graph Node Information
 
