@@ -1,3 +1,6 @@
+import 'allocator/arena'
+export { allocate_memory }
+
 import { Entity, store, crypto, ByteArray } from '@graphprotocol/graph-ts'
 import { NewOwner, Transfer } from './types/ENSRegistrar/EnsRegistrar'
 
