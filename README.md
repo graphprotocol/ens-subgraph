@@ -39,7 +39,7 @@ The [Graph Node](https://github.com/graphprotocol/graph-node) contains full inst
   1. Install IPFS and run `ipfs init` followed by `ipfs daemon`
   2. Install PostgreSQL and run `initdb -D .postgres` followed by `createdb ens-subgraph`
   3. If using Ubuntu, you may need to install additional packages: `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
-  4. Clone this repository, bulid it with `yarn install` and `yarn build-ipfs`. Get the Subgraph ID output that starts with `Qm`, you will need this for step 6
+  4. Clone this repository, bulid it with `yarn install`, `yarn codegen` and `yarn build-ipfs`. Get the Subgraph ID output that starts with `Qm`, you will need this for step 6
   5. Clone https://github.com/graphprotocol/graph-node , go to the `feature/block-stream` branch, and cargo build
   6. Now that all the dependencies are running, you can run the following command to connect to Infura:
 
