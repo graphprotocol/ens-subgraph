@@ -1,3 +1,6 @@
+import { Entity, store, crypto, ByteArray } from '@graphprotocol/graph-ts'
+import { NewOwner, Transfer } from './types/ENSRegistrar/EnsRegistrar'
+
 export function newOwner(event: NewOwner): void {
   let ensDomain = new Entity()
 
@@ -5,7 +8,6 @@ export function newOwner(event: NewOwner): void {
   //from graph-cli
   let hash = crypto.keccak256(domain)
   let id = hash.toHex()
-
 
   ensDomain.setString('id', id)
   ensDomain.setAddress('owner', event.params.owner)
@@ -22,12 +24,12 @@ export function transfer(event: Transfer): void {
   ensDomain.setString('id', id)
   ensDomain.setAddress('owner', event.params.owner)
 
-  //note - store will only write the attributes that have been set. All others will be left unaffected 
+  //note - store will only write the attributes that have been set. All others will be left unaffected
   store.set('EnsDomain', id, ensDomain)
 }
 
 function concat(a: ByteArray, b: ByteArray): ByteArray {
-  let out = new Uint8Array(a.length + b.length);
+  let out = new Uint8Array(a.length + b.length)
   for (let i = 0; i < a.length; i++) {
     out[i] = a[i]
   }

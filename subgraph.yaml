@@ -5,7 +5,7 @@ dataSources:
 - kind: ethereum/contract
   name: ENSRegistrar
   source:
-    address: "314159265dd8dbb310642f98f50c066173c1259b"
+    address: '0x314159265dd8dbb310642f98f50c066173c1259b'
     abi: EnsRegistrar
   mapping:
     kind: ethereum/events
