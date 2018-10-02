@@ -3,8 +3,8 @@
 
 
 "@graphprotocol/graph-cli@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@graphprotocol/graph-cli/-/graph-cli-0.3.0.tgz#e54ef47c33477b257010d2e8e390c66676fcb9c0"
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@graphprotocol/graph-cli/-/graph-cli-0.3.1.tgz#e4acc88868fa56df474f7553b3e0acc4afff91f5"
   dependencies:
     assemblyscript "https://github.com/AssemblyScript/assemblyscript#c4ebc8c291c1068da73ddf1a381eab93e1f69e11"
     chalk "^2.4.1"
