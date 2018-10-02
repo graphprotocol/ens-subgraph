@@ -1,14 +1,18 @@
+// Required for dynamic memory allocation in WASM / AssemblyScript
 import 'allocator/arena'
 export { allocate_memory }
 
-import { Entity, store, crypto, ByteArray } from '@graphprotocol/graph-ts'
+// Import types and APIs from graph-ts
+import { Entity, Value, store, crypto, ByteArray } from '@graphprotocol/graph-ts'
+
+// Import event types from the registrar contract ABI
 import { NewOwner, Transfer } from './types/ENSRegistrar/EnsRegistrar'
 
+// Handler for NewOwner events
 export function newOwner(event: NewOwner): void {
   let ensDomain = new Entity()
 
   let domain = concat(event.params.node, event.params.label)
-  //from graph-cli
   let hash = crypto.keccak256(domain)
   let id = hash.toHex()
 
@@ -20,17 +24,31 @@ export function newOwner(event: NewOwner): void {
   store.set('EnsDomain', id, ensDomain)
 }
 
+// Handler for Transfer events
 export function transfer(event: Transfer): void {
   let ensDomain = new Entity()
   let id = event.params.node.toHex()
 
-  ensDomain.setString('id', id)
-  ensDomain.setAddress('owner', event.params.owner)
+  let transfer = store.get('Transfer', id)
+  if (transfer == null) {
+    transfer = new Entity()
+    transfer.setString('id', id)
+    transfer.setString('domain', id)
+    transfer.setArray('owners', new Array<Value>())
+  }
 
-  //note - store will only write the attributes that have been set. All others will be left unaffected
+  // Add the new owner to the list of historical owners of the domain
+  let owners = transfer.getArray('owners')
+  owners.push(Value.fromAddress(event.params.owner))
+
+  ensDomain.setString('id', id)
+  ensDomain.setAddress('owners', event.params.owner)
+
+  store.set('Transfer', id, transfer as Entity)
   store.set('EnsDomain', id, ensDomain)
 }
 
+// Helper for concatenating two byte arrays
 function concat(a: ByteArray, b: ByteArray): ByteArray {
   let out = new Uint8Array(a.length + b.length)
   for (let i = 0; i < a.length; i++) {
