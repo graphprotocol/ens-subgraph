@@ -11,7 +11,7 @@ dataSources:
     kind: ethereum/events
     apiVersion: 0.0.1
     language: wasm/assemblyscript
-    file: ./mappings/ensRegistrar.ts
+    file: ./src/ensRegistrar.ts
     entities:
     - EnsDomain
     abis:
