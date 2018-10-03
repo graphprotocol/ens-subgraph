@@ -26,12 +26,9 @@ This subgraph has three files which tell the node to source the two ENS events s
 * A GraphQL schema      (schema.graphql)
 * A mapping script      (EnsRegistrar.ts)
 
-These files are all written and complete in this repository. If you want to read about how to modify these files yourself, please check out https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md. 
-
-
+This repository has these files created and ready to compile. If you want to read about how to modify these files yourself, please check out https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md. 
 
 The first 3327420 blocks will be skipped, as the ENS contracts did not exist on mainnet before this. Then it will take a while. The ENS contracts were highly active upon launch, and less active as of late. The whole thing took about 7 hours on a 2017 Macbook Pro. 
-
 
 We have provided quick steps on how to start up the ENS-Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help. 
 
@@ -39,26 +36,26 @@ We have provided quick steps on how to start up the ENS-Subgraph graph node belo
   1. Install IPFS and run `ipfs init` followed by `ipfs daemon`
   2. Install PostgreSQL and run `initdb -D .postgres` followed by `createdb ens-subgraph`
   3. If using Ubuntu, you may need to install additional packages: `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
-  4. Clone this repository, bulid it with `yarn install`, `yarn codegen` and `yarn build-ipfs`. Get the Subgraph ID output that starts with `Qm`, you will need this for step 6
+  4. Clone this repository, and build the subgraph with `yarn`, `yarn codegen` and `yarn build-ipfs`. Get the Subgraph ID  from `yarn build-ipfs` that starts with `Qm`, you will need this for step 6
   5. Clone https://github.com/graphprotocol/graph-node from master and `cargo build`
-  6. Now that all the dependencies are running, you can run the following command to connect to Infura:
+  6. Now that all the dependencies are running, you can run the following command to connect to Infura (it may take ~5-10 minutes to compile):
 
 ```
   cargo run -p graph-node --release -- \
   --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-subgraph \
-  --ethereum-ws mainnet:wss://mainnet.infura.io/_ws \
+  --ethereum-ws <YOUR_ENDPOINT_NAME>:wss://mainnet.infura.io/_ws \
   --ipfs 127.0.0.1:5001 \
-  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID FROM STEP 4>
+  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID_FROM_STEP_4>
 ```
 
   7. Or you can run the following command to connect to a local geth node with rpc option on: 
 
 ```
   cargo run -p graph-node --release -- \
-  --postgres-url postgresql://USERNAME@localhost:5432/ens-subgraph \
-  --ethereum-rpc mainnet:http://127.0.0.1:8545 \
+  --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-subgraph \
+  --ethereum-rpc <YOUR_ENDPOINT_NAME>:http://127.0.0.1:8545 \
   --ipfs 127.0.0.1:5001 \
-  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID FROM STEP 4>
+  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID_FROM_STEP_4>
 ```
 
 Once you have built the subgraph and started a Graph Node you may open a [Graphiql](https://github.com/graphql/graphiql) browser at `127.0.0.1:8000` and get started with querying.
@@ -80,14 +77,16 @@ This comes in handy when you know what the domain is, and you want to see how ma
     label
     node
     owner
-    transfers
+    transfers {
+      id
+    }
   }
 }
 ```
 
 ### Finding all the domains that one Ethereum Account Owns
 
-This comes in handy when there is a user who has registered potentially 100's of names, but can't remember them all. Simply filter by owner, and all of their purchases will be shown.
+This comes in handy when there is a user who has registered potentially 100's of names, but can't remember them all. Simply filter by owner, and all of their purchases will be shown. (You will have to process events up to around ~3720000 until you see this accounts first purchase of a domain).
 
 ```
 {
@@ -96,9 +95,35 @@ This comes in handy when there is a user who has registered potentially 100's of
     label
     node
     owner
-    transfers
+    transfers {
+      id
+    }
   }
 }
 ```
 
 Querying this account will show that it owns many domains. You can double check on etherscan, and see that this is an active ens registrar account https://etherscan.io/address/0xc73C21952577366A0fBfD62B461Aeb5305801157
+
+
+### Query all data for the first 100 entities
+
+This will show the full command for what you can query. If you don't chose a low number like the first 100, once it gets up to tens of thousands of entities, the query can slow down your computer a lot. 
+
+
+```
+{
+  ensDomains(first: 100) {
+    id
+    label
+    node
+    owner
+    transfers {
+      id
+      domain {
+        id
+      }
+      owners
+    }
+  }
+}
+```
