@@ -38,11 +38,15 @@ export function transfer(event: Transfer): void {
   }
 
   // Add the new owner to the list of historical owners of the domain
+
+
   let owners = transfer.getArray('owners')
   owners.push(Value.fromAddress(event.params.owner))
+  transfer.setArray('owners', owners)
+
 
   ensDomain.setString('id', id)
-  ensDomain.setAddress('owners', event.params.owner)
+  ensDomain.setAddress('owner', event.params.owner)
 
   store.set('Transfer', id, transfer as Entity)
   store.set('EnsDomain', id, ensDomain)
