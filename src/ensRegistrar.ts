@@ -1,15 +1,8 @@
-// Required for dynamic memory allocation in WASM / AssemblyScript
-import 'allocator/arena'
-export { allocate_memory }
-
 // Import types and APIs from graph-ts
 import {
   Address,
   Bytes,
   ByteArray,
-  Entity,
-  Value,
-  store,
   crypto,
 } from '@graphprotocol/graph-ts'
 
@@ -25,11 +18,11 @@ export function newOwner(event: NewOwner): void {
   let domainHash = crypto.keccak256(domainBytes)
   let domainId = domainHash.toHex()
 
-  let domain = new EnsDomain()
+  let domain = new EnsDomain(domainId)
   domain.owner = event.params.owner
   domain.node = event.params.node
   domain.label = event.params.label
-  store.set('EnsDomain', domainId, domain)
+  domain.save()
 }
 
 // Handler for Transfer events
@@ -37,9 +30,9 @@ export function transfer(event: TransferEvent): void {
   let domainId = event.params.node.toHex()
 
   // Create transfer if it does not exists yet
-  let transfer = store.get('Transfer', domainId) as Transfer | null
+  let transfer = Transfer.load(domainId)
   if (transfer == null) {
-    transfer = new Transfer()
+    transfer = new Transfer(domainId)
     transfer.domain = domainId
     transfer.owners = new Array<Bytes>()
   }
@@ -50,11 +43,9 @@ export function transfer(event: TransferEvent): void {
   transfer.owners = owners
 
   // Update the domain owner
-  let domain = new EnsDomain()
+  let domain = new EnsDomain(domainId)
   domain.owner = event.params.owner
-
-  store.set('Transfer', domainId, transfer as Transfer)
-  store.set('EnsDomain', domainId, domain)
+  domain.save()
 }
 
 // Helper for concatenating two byte arrays

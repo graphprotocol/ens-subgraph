@@ -2,12 +2,34 @@ import {
   TypedMap,
   Entity,
   Value,
+  ValueKind,
+  store,
   Address,
   Bytes,
   BigInt
 } from "@graphprotocol/graph-ts";
 
 export class EnsDomain extends Entity {
+  constructor(id: string) {
+    this.set("id", Value.fromString(id));
+    return this;
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save EnsDomain entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save EnsDomain entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("EnsDomain", id.toString(), this);
+  }
+
+  static load(id: string): EnsDomain | null {
+    return store.get("EnsDomain", id) as EnsDomain | null;
+  }
+
   get id(): string {
     let value = this.get("id");
     if (value === null) {
@@ -95,6 +117,26 @@ export class EnsDomain extends Entity {
 }
 
 export class Transfer extends Entity {
+  constructor(id: string) {
+    this.set("id", Value.fromString(id));
+    return this;
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Transfer entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Transfer entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Transfer", id.toString(), this);
+  }
+
+  static load(id: string): Transfer | null {
+    return store.get("Transfer", id) as Transfer | null;
+  }
+
   get id(): string {
     let value = this.get("id");
     if (value === null) {
