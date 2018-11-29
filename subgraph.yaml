@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.3
 schema:
   file: ./schema.graphql
 dataSources:
@@ -13,8 +13,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/ensRegistrar.ts
       entities:
-        - EnsDomain
-        - Transfer
+        - Domain
       abis:
         - name: EnsRegistrar
           file: ./abis/EtherscanAbi.json
@@ -23,3 +22,7 @@ dataSources:
           handler: transfer
         - event: NewOwner(bytes32,bytes32,address)
           handler: newOwner
+        - event: NewResolver(bytes32,address)
+          handler: newResolver
+        - event: NewTTL(bytes32,uint64)
+          handler: newTTL

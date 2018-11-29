@@ -7,7 +7,7 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class EnsDomain extends Entity {
+export class Domain extends Entity {
   get id(): string {
     let value = this.get("id");
     if (value === null) {
@@ -25,37 +25,54 @@ export class EnsDomain extends Entity {
     }
   }
 
-  get node(): Bytes | null {
-    let value = this.get("node");
+  get labelhash(): Bytes {
+    let value = this.get("labelhash");
     if (value === null) {
       return null;
     } else {
-      return value.toBytes() as Bytes | null;
+      return value.toBytes() as Bytes;
     }
   }
 
-  set node(value: Bytes | null) {
+  set labelhash(value: Bytes) {
     if (value === null) {
-      this.unset("node");
+      this.unset("labelhash");
     } else {
-      this.set("node", Value.fromBytes(value as Bytes));
+      this.set("labelhash", Value.fromBytes(value as Bytes));
     }
   }
 
-  get label(): Bytes | null {
-    let value = this.get("label");
+  get parent(): string | null {
+    let value = this.get("parent");
     if (value === null) {
       return null;
     } else {
-      return value.toBytes() as Bytes | null;
+      return value.toString() as string | null;
     }
   }
 
-  set label(value: Bytes | null) {
+  set parent(value: string | null) {
     if (value === null) {
-      this.unset("label");
+      this.unset("parent");
     } else {
-      this.set("label", Value.fromBytes(value as Bytes));
+      this.set("parent", Value.fromString(value as string));
+    }
+  }
+
+  get subdomains(): Array<string> {
+    let value = this.get("subdomains");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray() as Array<string>;
+    }
+  }
+
+  set subdomains(value: Array<string>) {
+    if (value === null) {
+      this.unset("subdomains");
+    } else {
+      this.set("subdomains", Value.fromStringArray(value as Array<string>));
     }
   }
 
@@ -76,73 +93,37 @@ export class EnsDomain extends Entity {
     }
   }
 
-  get transfers(): Array<string> | null {
-    let value = this.get("transfers");
+  get resolver(): Bytes | null {
+    let value = this.get("resolver");
     if (value === null) {
       return null;
     } else {
-      return value.toStringArray() as Array<string> | null;
+      return value.toBytes() as Bytes | null;
     }
   }
 
-  set transfers(value: Array<string> | null) {
+  set resolver(value: Bytes | null) {
     if (value === null) {
-      this.unset("transfers");
+      this.unset("resolver");
     } else {
-      this.set("transfers", Value.fromStringArray(value as Array<string>));
+      this.set("resolver", Value.fromBytes(value as Bytes));
     }
   }
-}
 
-export class Transfer extends Entity {
-  get id(): string {
-    let value = this.get("id");
+  get ttl(): i32 | null {
+    let value = this.get("ttl");
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string;
+      return value.toI32() as i32 | null;
     }
   }
 
-  set id(value: string) {
+  set ttl(value: i32 | null) {
     if (value === null) {
-      this.unset("id");
+      this.unset("ttl");
     } else {
-      this.set("id", Value.fromString(value as string));
-    }
-  }
-
-  get domain(): string {
-    let value = this.get("domain");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString() as string;
-    }
-  }
-
-  set domain(value: string) {
-    if (value === null) {
-      this.unset("domain");
-    } else {
-      this.set("domain", Value.fromString(value as string));
-    }
-  }
-
-  get owners(): Array<Bytes> | null {
-    let value = this.get("owners");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytesArray() as Array<Bytes> | null;
-    }
-  }
-
-  set owners(value: Array<Bytes> | null) {
-    if (value === null) {
-      this.unset("owners");
-    } else {
-      this.set("owners", Value.fromBytesArray(value as Array<Bytes>));
+      this.set("ttl", Value.fromI32(value as i32));
     }
   }
 }
