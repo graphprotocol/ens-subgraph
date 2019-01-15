@@ -10,17 +10,21 @@ import {
 import { NewOwner, Transfer as TransferEvent, NewResolver, NewTTL } from './types/ENSRegistrar/EnsRegistrar'
 
 // Import entity types generated from the GraphQL schema
-import { Domain } from './types/schema'
+import { Domain, Account } from './types/schema'
 
 // Handler for NewOwner events
 export function newOwner(event: NewOwner): void {
   let subnode = crypto.keccak256(concat(event.params.node, event.params.label)).toHex()
 
+  let account = new Account(event.params.owner.toHex())
+  account.save()
+
   let domain = new Domain(subnode)
-  domain.owner = event.params.owner
+  domain.owner = account.id
   domain.parent = event.params.node.toHex()
   domain.labelhash = event.params.label
   domain.save()
+
 }
 
 // Handler for Transfer events
@@ -40,11 +44,12 @@ export function transfer(event: TransferEvent): void {
   // owners.push(event.params.owner)
   // transfer.owners = owners
 
+  let account = new Account(event.params.owner.toHex())
+  account.save()
+
   // Update the domain owner
   let domain = new Domain(node)
-  domain.owner = event.params.owner
-
-  // store.set('Transfer', domainId, transfer as Transfer)
+  domain.owner = account.id
   domain.save()
 }
 
