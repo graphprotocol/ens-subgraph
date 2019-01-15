@@ -1,15 +1,8 @@
-// Required for dynamic memory allocation in WASM / AssemblyScript
-import 'allocator/arena'
-export { allocate_memory }
-
 // Import types and APIs from graph-ts
 import {
   Address,
   Bytes,
   ByteArray,
-  Entity,
-  Value,
-  store,
   crypto,
 } from '@graphprotocol/graph-ts'
 
@@ -23,11 +16,11 @@ import { Domain } from './types/schema'
 export function newOwner(event: NewOwner): void {
   let subnode = crypto.keccak256(concat(event.params.node, event.params.label)).toHex()
 
-  let domain = new Domain()
+  let domain = new Domain(subnode)
   domain.owner = event.params.owner
   domain.parent = event.params.node.toHex()
   domain.labelhash = event.params.label
-  store.set('Domain', subnode, domain)
+  domain.save()
 }
 
 // Handler for Transfer events
@@ -48,29 +41,29 @@ export function transfer(event: TransferEvent): void {
   // transfer.owners = owners
 
   // Update the domain owner
-  let domain = new Domain()
+  let domain = new Domain(node)
   domain.owner = event.params.owner
 
   // store.set('Transfer', domainId, transfer as Transfer)
-  store.set('Domain', node, domain)
+  domain.save()
 }
 
 // Handler for NewResolver events
 export function newResolver(event: NewResolver): void {
   let node = event.params.node.toHex()
 
-  let domain = new Domain()
+  let domain = new Domain(node)
   domain.resolver = event.params.resolver
-  store.set('Domain', node, domain)
+  domain.save()
 }
 
 // Handler for NewTTL events
 export function newTTL(event: NewTTL): void {
   let node = event.params.node.toHex()
 
-  let domain = new Domain()
+  let domain = new Domain(node)
   domain.ttl = event.params.ttl as i32
-  store.set('Domain', node, domain)
+  domain.save()
 }
 
 // Helper for concatenating two byte arrays

@@ -2,44 +2,50 @@ import {
   TypedMap,
   Entity,
   Value,
+  ValueKind,
+  store,
   Address,
   Bytes,
   BigInt
 } from "@graphprotocol/graph-ts";
 
 export class Domain extends Entity {
+  constructor(id: string) {
+    this.entries = new Array(0);
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Domain entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Domain entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Domain", id.toString(), this);
+  }
+
+  static load(id: string): Domain | null {
+    return store.get("Domain", id) as Domain | null;
+  }
+
   get id(): string {
     let value = this.get("id");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString() as string;
-    }
+    return value.toString();
   }
 
   set id(value: string) {
-    if (value === null) {
-      this.unset("id");
-    } else {
-      this.set("id", Value.fromString(value as string));
-    }
+    this.set("id", Value.fromString(value));
   }
 
   get labelhash(): Bytes {
     let value = this.get("labelhash");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytes() as Bytes;
-    }
+    return value.toBytes();
   }
 
   set labelhash(value: Bytes) {
-    if (value === null) {
-      this.unset("labelhash");
-    } else {
-      this.set("labelhash", Value.fromBytes(value as Bytes));
-    }
+    this.set("labelhash", Value.fromBytes(value));
   }
 
   get parent(): string | null {
@@ -47,7 +53,7 @@ export class Domain extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string | null;
+      return value.toString();
     }
   }
 
@@ -61,36 +67,20 @@ export class Domain extends Entity {
 
   get subdomains(): Array<string> {
     let value = this.get("subdomains");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray() as Array<string>;
-    }
+    return value.toStringArray();
   }
 
   set subdomains(value: Array<string>) {
-    if (value === null) {
-      this.unset("subdomains");
-    } else {
-      this.set("subdomains", Value.fromStringArray(value as Array<string>));
-    }
+    this.set("subdomains", Value.fromStringArray(value));
   }
 
   get owner(): Bytes {
     let value = this.get("owner");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytes() as Bytes;
-    }
+    return value.toBytes();
   }
 
   set owner(value: Bytes) {
-    if (value === null) {
-      this.unset("owner");
-    } else {
-      this.set("owner", Value.fromBytes(value as Bytes));
-    }
+    this.set("owner", Value.fromBytes(value));
   }
 
   get resolver(): Bytes | null {
@@ -98,7 +88,7 @@ export class Domain extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBytes() as Bytes | null;
+      return value.toBytes();
     }
   }
 
@@ -110,20 +100,12 @@ export class Domain extends Entity {
     }
   }
 
-  get ttl(): i32 | null {
+  get ttl(): i32 {
     let value = this.get("ttl");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toI32() as i32 | null;
-    }
+    return value.toI32();
   }
 
-  set ttl(value: i32 | null) {
-    if (value === null) {
-      this.unset("ttl");
-    } else {
-      this.set("ttl", Value.fromI32(value as i32));
-    }
+  set ttl(value: i32) {
+    this.set("ttl", Value.fromI32(value));
   }
 }
