@@ -30,33 +30,35 @@ This repository has these files created and ready to compile. If you want to rea
 
 The first 3327420 blocks will be skipped, as the ENS contracts did not exist on mainnet before this. Then it will take a while. The ENS contracts were highly active upon launch, and less active as of late. The whole thing took about 7 hours on a 2017 Macbook Pro. 
 
-We have provided quick steps on how to start up the ENS-Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help. 
+We have provided quick steps on how to start up the ENS Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help. 
 
-## Steps to get the ENS-Subgraph Running 
+## Steps to get the ENS Subgraph Running 
   1. Install IPFS and run `ipfs init` followed by `ipfs daemon`
-  2. Install PostgreSQL and run `initdb -D .postgres` followed by `createdb ens-subgraph`
+  2. Install PostgreSQL and run `initdb -D .postgres` followed by `pg_ctl -D .postgres start` and `createdb ens-mainnet` (note this db name is used in the commands below for the mainnet examples)
   3. If using Ubuntu, you may need to install additional packages: `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
-  4. Clone this repository, and build the subgraph with `yarn`, `yarn codegen` and `yarn build-ipfs`. Get the Subgraph ID  from `yarn build-ipfs` that starts with `Qm`, you will need this for step 6
+  4. Clone this repository, and run the following:
+     * `yarn`
+     * `yarn codegen` 
   5. Clone https://github.com/graphprotocol/graph-node from master and `cargo build`
-  6. Now that all the dependencies are running, you can run the following command to connect to Infura (it may take ~5-10 minutes to compile):
+  6. a) Now that all the dependencies are running, you can run the following command to connect to Infura mainnet (it may take a few minutes for Rust to compile). PASSWORD might be optional, it depends on your postgres setup:
 
 ```
   cargo run -p graph-node --release -- \
-  --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-subgraph \
-  --ethereum-ws <YOUR_ENDPOINT_NAME>:wss://mainnet.infura.io/_ws \
+  --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-mainnet \
   --ipfs 127.0.0.1:5001 \
-  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID_FROM_STEP_4>
+  --ethereum-rpc mainnet-infura:https://mainnet.infura.io --debug
 ```
-
-  7. Or you can run the following command to connect to a local geth node with rpc option on: 
-
+  6. b) Or Mainnet Local:
 ```
   cargo run -p graph-node --release -- \
-  --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-subgraph \
-  --ethereum-rpc <YOUR_ENDPOINT_NAME>:http://127.0.0.1:8545 \
+  --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-mainnet \
   --ipfs 127.0.0.1:5001 \
-  --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID_FROM_STEP_4>
+  --ethereum-rpc mainnet-local:http://127.0.0.1:8545 
 ```
+
+ 7. Now create the subgraph locally on The Graph Node with `yarn create-subgraph`. (On The Graph Hosted service, creating the subgraph is done in the web broswer). 
+  
+ 8. Now deploy the ens subgraph to The Graph Node with `yarn deploy`. You should see a lot of blocks being skipped in the `graph-node` terminal, and then it will start ingesting events from the moment the contracts were uploaded to the network. 
 
 Once you have built the subgraph and started a Graph Node you may open a [Graphiql](https://github.com/graphql/graphiql) browser at `127.0.0.1:8000` and get started with querying.
 
