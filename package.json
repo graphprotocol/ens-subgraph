@@ -1,18 +1,19 @@
 {
-  "name": "ens-subgraph",
+  "name": "ens",
+  "version": "1.0.0",
+  "repository": "https://github.com/graphprotocol/decentraland-subgraph",
+  "license": "MIT",
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/ subgraph.yaml",
+    "create-subgraph": "graph create ens --node http://127.0.0.1:8020",
     "build": "graph build subgraph.yaml",
-    "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
+    "build-ipfs": "graph build --ipfs http://localhost:5001 subgraph.yaml",
     "build-wast": "graph build -t wast subgraph.yaml",
-    "deploy": "graph deploy --ipfs /ip4/127.0.0.1/tcp/5001 --node http://127.0.0.1:8020/ -n ens subgraph.yaml"
+    "deploy": "graph deploy ens --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020/",
+    "watch": "graph deploy ens --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.5.0",
-    "@graphprotocol/graph-ts": "^0.5.0"
+    "@graphprotocol/graph-cli": "https://github.com/graphprotocol/graph-cli",
+    "@graphprotocol/graph-ts": "https://github.com/graphprotocol/graph-ts"
   },
-  "dependencies": {
-    "eth-ens-namehash": "^2.0.8",
-    "web3": "^1.0.0-beta.36"
-  }
 }
