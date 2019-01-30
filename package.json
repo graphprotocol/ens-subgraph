@@ -5,10 +5,11 @@
     "build": "graph build subgraph.yaml",
     "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
     "build-wast": "graph build -t wast subgraph.yaml",
-    "deploy": "graph deploy --ipfs /ip4/127.0.0.1/tcp/5001 --node http://127.0.0.1:8020/ -n ens subgraph.yaml"
+    "create": "graph create --node http://127.0.0.1:8020/ ens",
+    "deploy": "graph deploy --ipfs http://127.0.0.1:5001/api/v0/ --node http://127.0.0.1:8020/ ens subgraph.yaml"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.5.0",
+    "@graphprotocol/graph-cli": "http://github.com/graphprotocol/graph-cli#master",
     "@graphprotocol/graph-ts": "^0.5.0"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 # ENS Subgraph
 
-This Subgraph sources two events from the ENS Registry, at the address on mainnnet at `0x314159265dd8dbb310642f98f50c066173c1259b`. The two events that emit events are:
+This Subgraph sources two events from the ENS Registry, at the address on mainnnet at `0x314159265dd8dbb310642f98f50c066173c1259b`. The methods that emit events are:
 
 - `setOwner(bytes32 node, address owner)`
   - which emits `Transfer(node, owner)`
@@ -8,14 +8,20 @@ This Subgraph sources two events from the ENS Registry, at the address on mainnn
 - `setSubnodeOwner(bytes32 node, bytes32 label, address owner)`
   - which emits `NewOwner(node, label, owner)`
   - This event indicated when any ens domain has been registered
+- `setResolver(bytes32 node, address resolver)`
+  - which emits `NewResolver(bytes32,address)`
+  - This event indicates when a domain has had its resolver field updated
+- `setTTL(bytes32 node, uint ttl)`
+  - which emits  `NewTTL(bytes32,uint64)`
+  - This event indicates when a domain has had its TTL field updated.
 
-Contract events can be seen here: https://github.com/ensdomains/ens/blob/master/contracts/ENSRegistry.sol
+Contract events can be seen here: https://github.com/ensdomains/ens/blob/master/contracts/Registry.sol
 
 The ABI was taken from https://etherscan.io/address/0x314159265dd8dbb310642f98f50c066173c1259b#code
 
-Whenever the `Transfer` events and `NewOwner` events are emitted, the Graph Node will store this value as an entity `EnsDomain`. It processes blocks in ascending order. `setOwner()` will be stored as a new entity `Tranfer`. `setOwner()` will also update the owner attritbute of the `EnsDomain` entity the transfer is associated with. 
+Whenever the `Transfer` events and `NewOwner` events are emitted, the Graph Node will store this value as an entity `Domain`. It processes blocks in ascending order. `setOwner()` will be stored as a new entity `Transfer`. `setOwner()` will also update the owner attribute of the `Domain` entity the transfer is associated with.
 
-This subgraph has `keccak-256` (a.k.a `sha3` on Ethereum) which is native Rust code, which the WASM code calls out to, and therefore can be used with mappings. This is needed because the event `setSubnodeOwner` does not emit the actual domain hash, it emits two `bytes32` values that are then used with `sha3(node, label)` to create the domain hash. More detail can be found by reading into the [namehash alogorithm](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md). This allows for all domains to be stored in the subgraph with their unique `id` as the domain hash. 
+This subgraph has `keccak-256` (a.k.a `sha3` on Ethereum) which is native Rust code, which the WASM code calls out to, and therefore can be used with mappings. This is needed because the event `setSubnodeOwner` does not emit the actual domain hash, it emits two `bytes32` values that are then used with `sha3(node, label)` to create the domain hash. More detail can be found by reading into the [namehash alogorithm](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md). This allows for all domains to be stored in the subgraph with their unique `id` as the domain hash.
 
 ## Graph Node Information
 
@@ -26,13 +32,13 @@ This subgraph has three files which tell the node to source the two ENS events s
 * A GraphQL schema      (schema.graphql)
 * A mapping script      (EnsRegistrar.ts)
 
-This repository has these files created and ready to compile. If you want to read about how to modify these files yourself, please check out https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md. 
+This repository has these files created and ready to compile. If you want to read about how to modify these files yourself, please check out https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md.
 
-The first 3327420 blocks will be skipped, as the ENS contracts did not exist on mainnet before this. Then it will take a while. The ENS contracts were highly active upon launch, and less active as of late. The whole thing took about 7 hours on a 2017 Macbook Pro. 
+The first 3327420 blocks will be skipped, as the ENS contracts did not exist on mainnet before this. Then it will take a while. The ENS contracts were highly active upon launch, and less active as of late. The whole thing took about 7 hours on a 2017 Macbook Pro.
 
-We have provided quick steps on how to start up the ENS-Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help. 
+We have provided quick steps on how to start up the ENS-Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help.
 
-## Steps to get the ENS-Subgraph Running 
+## Steps to get the ENS-Subgraph Running
   1. Install IPFS and run `ipfs init` followed by `ipfs daemon`
   2. Install PostgreSQL and run `initdb -D .postgres` followed by `createdb ens-subgraph`
   3. If using Ubuntu, you may need to install additional packages: `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
@@ -48,7 +54,7 @@ We have provided quick steps on how to start up the ENS-Subgraph graph node belo
   --subgraph <SUBGRAPH_NAME>:<SUBGRAPHID_FROM_STEP_4>
 ```
 
-  7. Or you can run the following command to connect to a local geth node with rpc option on: 
+  7. Or you can run the following command to connect to a local geth node with rpc option on:
 
 ```
   cargo run -p graph-node --release -- \
@@ -60,11 +66,11 @@ We have provided quick steps on how to start up the ENS-Subgraph graph node belo
 
 Once you have built the subgraph and started a Graph Node you may open a [Graphiql](https://github.com/graphql/graphiql) browser at `127.0.0.1:8000` and get started with querying.
 
-## Getting started with Querying 
+## Getting started with Querying
 
-See the query API here: https://github.com/graphprotocol/graph-node/blob/master/docs/graphql-api.md 
+See the query API here: https://github.com/graphprotocol/graph-node/blob/master/docs/graphql-api.md
 
-Below are three ways to show how to query the ENS Subgraph for intesting data. 
+Below are three ways to show how to query the ENS Subgraph for intesting data.
 
 ### Finding all the subdomains of a domain
 This comes in handy when you know what the domain is, and you want to see how many subdomains it has. The domain `0x91d1777781884d03a6757a803996e38de2a42967fb37eeaca72729271025a9e2` is the
@@ -72,12 +78,11 @@ This comes in handy when you know what the domain is, and you want to see how ma
 
 ```
 {
-  ensDomains(where: {node_contains: "0x91d1777781884d03a6757a803996e38de2a42967fb37eeaca72729271025a9e2"}) {
+  domains(where: {node_eq: "0x91d1777781884d03a6757a803996e38de2a42967fb37eeaca72729271025a9e2"}) {
     id
-    label
-    node
+    labelhash
     owner
-    transfers {
+    subdomains {
       id
     }
   }
@@ -90,12 +95,11 @@ This comes in handy when there is a user who has registered potentially 100's of
 
 ```
 {
-  ensDomains(where: {owner_contains: "0xc73C21952577366A0fBfD62B461Aeb5305801157"}) {
+  domains(where: {owner_eq: "0xc73C21952577366A0fBfD62B461Aeb5305801157"}) {
     id
-    label
-    node
+    labelhash
     owner
-    transfers {
+    domains {
       id
     }
   }
@@ -107,23 +111,28 @@ Querying this account will show that it owns many domains. You can double check 
 
 ### Query all data for the first 100 entities
 
-This will show the full command for what you can query. If you don't chose a low number like the first 100, once it gets up to tens of thousands of entities, the query can slow down your computer a lot. 
+This will show the full command for what you can query. If you don't chose a low number like the first 100, once it gets up to tens of thousands of entities, the query can slow down your computer a lot.
 
 
 ```
 {
-  ensDomains(first: 100) {
+  domains(first: 100) {
     id
-    label
-    node
-    owner
-    transfers {
-      id
-      domain {
+    labelhash
+    parent {
         id
-      }
-      owners
     }
+    subdomains {
+        id
+    }
+    owner {
+        id
+        domains {
+            id
+        }
+    }
+    resolver
+    ttl
   }
 }
 ```

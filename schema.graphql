@@ -1,6 +1,6 @@
 type Domain @entity {
   id: ID!
-  labelhash: Bytes!
+  labelhash: Bytes
   parent: Domain
   subdomains: [Domain!]! @derivedFrom(field: "parent")
   owner: Account!
