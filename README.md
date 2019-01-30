@@ -95,12 +95,10 @@ This comes in handy when there is a user who has registered potentially 100's of
 
 ```
 {
-  domains(where: {owner_eq: "0xc73C21952577366A0fBfD62B461Aeb5305801157"}) {
-    id
-    labelhash
-    owner
+	account(id:"0xc73c21952577366a0fbfd62b461aeb5305801157") {
     domains {
       id
+      labelhash
     }
   }
 }
