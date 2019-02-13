@@ -32,7 +32,7 @@ The first 3327420 blocks will be skipped, as the ENS contracts did not exist on 
 
 We have provided quick steps on how to start up the ENS Subgraph graph node below. If these steps aren't descriptive enough, the [Getting started](https://github.com/graphprotocol/graph-node/blob/master/docs/getting-started.md) document has in depth details that should help. 
 
-## Steps to get the ENS Subgraph Running 
+## Steps to Deploy The ENS Subgraph Locally 
   1. Install IPFS and run `ipfs init` followed by `ipfs daemon`
   2. Install PostgreSQL and run `initdb -D .postgres` followed by `pg_ctl -D .postgres start` and `createdb ens-mainnet` (note this db name is used in the commands below for the mainnet examples)
   3. If using Ubuntu, you may need to install additional packages: `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
@@ -48,7 +48,7 @@ We have provided quick steps on how to start up the ENS Subgraph graph node belo
   --ipfs 127.0.0.1:5001 \
   --ethereum-rpc mainnet-infura:https://mainnet.infura.io --debug
 ```
-  6. b) Or Mainnet Local:
+  6. b) Or Mainnet with a Local Ethereum node. This is very common if you are working with brand new contracts, and you have deployed them to a testnet environment like *ganache* (note that ganache commonly uses port 9545 rather than 8545):
 ```
   cargo run -p graph-node --release -- \
   --postgres-url postgresql://USERNAME:[PASSWORD]@localhost:5432/ens-mainnet \
@@ -56,11 +56,14 @@ We have provided quick steps on how to start up the ENS Subgraph graph node belo
   --ethereum-rpc mainnet-local:http://127.0.0.1:8545 
 ```
 
- 7. Now create the subgraph locally on The Graph Node with `yarn create-subgraph`. (On The Graph Hosted service, creating the subgraph is done in the web broswer). 
+ 7. Now create the subgraph locally on The Graph Node with `yarn create-local`. (On The Graph Hosted service, creating the subgraph is done in the web broswer). 
   
  8. Now deploy the ens subgraph to The Graph Node with `yarn deploy`. You should see a lot of blocks being skipped in the `graph-node` terminal, and then it will start ingesting events from the moment the contracts were uploaded to the network. 
 
 Once you have built the subgraph and started a Graph Node you may open a [Graphiql](https://github.com/graphql/graphiql) browser at `127.0.0.1:8000` and get started with querying.
+
+## Viewing the Subgraph on the Graph Hosted Service
+This subgraph has already been deploy to the hosted service, and you can see it under on [The Graph Explorer](https://thegraph.com/explorer/). To understand how deploying to the hosted service works, check out the [Deploying Instructions](https://thegraph.com/docs/deploy-a-subgraph) in the official documentation. The most important part of deploying to the hosted service is ensuring that the npm script for `deploy` is updated to the correct name that you want to deploy with. 
 
 ## Getting started with Querying 
 
