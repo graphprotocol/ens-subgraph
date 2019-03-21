@@ -39,13 +39,21 @@ export class Domain extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get labelhash(): Bytes {
+  get labelhash(): Bytes | null {
     let value = this.get("labelhash");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set labelhash(value: Bytes) {
-    this.set("labelhash", Value.fromBytes(value));
+  set labelhash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("labelhash");
+    } else {
+      this.set("labelhash", Value.fromBytes(value as Bytes));
+    }
   }
 
   get parent(): string | null {
@@ -147,5 +155,114 @@ export class Account extends Entity {
 
   set domains(value: Array<string>) {
     this.set("domains", Value.fromStringArray(value));
+  }
+}
+
+export class AuctionedName extends Entity {
+  constructor(id: string) {
+    this.entries = new Array(0);
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save AuctionedName entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save AuctionedName entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("AuctionedName", id.toString(), this);
+  }
+
+  static load(id: string): AuctionedName | null {
+    return store.get("AuctionedName", id) as AuctionedName | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get registrationDate(): i32 {
+    let value = this.get("registrationDate");
+    return value.toI32();
+  }
+
+  set registrationDate(value: i32) {
+    this.set("registrationDate", Value.fromI32(value));
+  }
+
+  get winningBidder(): string {
+    let value = this.get("winningBidder");
+    return value.toString();
+  }
+
+  set winningBidder(value: string) {
+    this.set("winningBidder", Value.fromString(value));
+  }
+
+  get maxBid(): BigInt | null {
+    let value = this.get("maxBid");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set maxBid(value: BigInt | null) {
+    if (value === null) {
+      this.unset("maxBid");
+    } else {
+      this.set("maxBid", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get secondBid(): BigInt | null {
+    let value = this.get("secondBid");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set secondBid(value: BigInt | null) {
+    if (value === null) {
+      this.unset("secondBid");
+    } else {
+      this.set("secondBid", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get bidCount(): i32 {
+    let value = this.get("bidCount");
+    return value.toI32();
+  }
+
+  set bidCount(value: i32) {
+    this.set("bidCount", Value.fromI32(value));
+  }
+
+  get state(): string | null {
+    let value = this.get("state");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set state(value: string | null) {
+    if (value === null) {
+      this.unset("state");
+    } else {
+      this.set("state", Value.fromString(value as string));
+    }
   }
 }

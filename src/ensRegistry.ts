@@ -6,8 +6,8 @@ import {
   crypto,
 } from '@graphprotocol/graph-ts'
 
-// Import event types from the registrar contract ABI
-import { NewOwner, Transfer as TransferEvent, NewResolver, NewTTL } from './types/ENSRegistrar/EnsRegistrar'
+// Import event types from the registry contract ABI
+import { NewOwner, Transfer as TransferEvent, NewResolver, NewTTL } from './types/ENSRegistry/EnsRegistry'
 
 // Import entity types generated from the GraphQL schema
 import { Domain, Account } from './types/schema'

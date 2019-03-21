@@ -12,3 +12,20 @@ type Account @entity {
   id: ID!
   domains: [Domain!]! @derivedFrom(field: "owner")
 }
+
+enum AuctionState {
+  AUCTION
+  FINALIZED
+  RELEASED
+  FORBIDDEN
+}
+
+type AuctionedName @entity {
+  id: ID!
+  registrationDate: Int!
+  winningBidder: Account
+  maxBid: BigInt
+  secondBid: BigInt
+  bidCount: Int!
+  state: AuctionState
+}

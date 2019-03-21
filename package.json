@@ -3,17 +3,18 @@
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/ subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
+    "build-ipfs": "graph build --ipfs http://127.0.0.1:5001/api/v0/ subgraph.yaml",
     "build-wast": "graph build -t wast subgraph.yaml",
     "create": "graph create --node http://127.0.0.1:8020/ ens",
-    "deploy": "graph deploy --ipfs http://127.0.0.1:5001/api/v0/ --node http://127.0.0.1:8020/ ens subgraph.yaml"
+    "deploy": "graph deploy --ipfs http://127.0.0.1:5001/api/v0/ --node http://127.0.0.1:8020/ ens",
+    "deploy-thegraph": "graph deploy --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ ensdomains/ens"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "http://github.com/graphprotocol/graph-cli#master",
-    "@graphprotocol/graph-ts": "^0.5.0"
+    "@graphprotocol/graph-cli": "^0.7.3",
+    "@graphprotocol/graph-ts": "^0.5.1"
   },
   "dependencies": {
     "eth-ens-namehash": "^2.0.8",
-    "web3": "^1.0.0-beta.36"
+    "web3": "^1.0.0-beta.50"
   }
 }
