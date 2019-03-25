@@ -82,6 +82,15 @@ export class Domain extends Entity {
     this.set("subdomains", Value.fromStringArray(value));
   }
 
+  get subdomainCount(): i32 {
+    let value = this.get("subdomainCount");
+    return value.toI32();
+  }
+
+  set subdomainCount(value: i32) {
+    this.set("subdomainCount", Value.fromI32(value));
+  }
+
   get owner(): string {
     let value = this.get("owner");
     return value.toString();
@@ -156,6 +165,15 @@ export class Account extends Entity {
   set domains(value: Array<string>) {
     this.set("domains", Value.fromStringArray(value));
   }
+
+  get domainCount(): i32 {
+    let value = this.get("domainCount");
+    return value.toI32();
+  }
+
+  set domainCount(value: i32) {
+    this.set("domainCount", Value.fromI32(value));
+  }
 }
 
 export class AuctionedName extends Entity {
@@ -188,6 +206,40 @@ export class AuctionedName extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get labelhash(): Bytes | null {
+    let value = this.get("labelhash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set labelhash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("labelhash");
+    } else {
+      this.set("labelhash", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get domain(): string | null {
+    let value = this.get("domain");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set domain(value: string | null) {
+    if (value === null) {
+      this.unset("domain");
+    } else {
+      this.set("domain", Value.fromString(value as string));
+    }
+  }
+
   get registrationDate(): i32 {
     let value = this.get("registrationDate");
     return value.toI32();
@@ -197,13 +249,21 @@ export class AuctionedName extends Entity {
     this.set("registrationDate", Value.fromI32(value));
   }
 
-  get winningBidder(): string {
+  get winningBidder(): string | null {
     let value = this.get("winningBidder");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set winningBidder(value: string) {
-    this.set("winningBidder", Value.fromString(value));
+  set winningBidder(value: string | null) {
+    if (value === null) {
+      this.unset("winningBidder");
+    } else {
+      this.set("winningBidder", Value.fromString(value as string));
+    }
   }
 
   get maxBid(): BigInt | null {
