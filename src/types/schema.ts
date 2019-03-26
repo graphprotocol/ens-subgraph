@@ -206,23 +206,6 @@ export class AuctionedName extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get labelhash(): Bytes | null {
-    let value = this.get("labelhash");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set labelhash(value: Bytes | null) {
-    if (value === null) {
-      this.unset("labelhash");
-    } else {
-      this.set("labelhash", Value.fromBytes(value as Bytes));
-    }
-  }
-
   get domain(): string | null {
     let value = this.get("domain");
     if (value === null) {

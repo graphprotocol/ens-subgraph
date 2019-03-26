@@ -531,7 +531,7 @@
       {
         "indexed": true,
         "name": "name",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "indexed": false,

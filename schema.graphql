@@ -24,8 +24,7 @@ enum AuctionState {
 
 type AuctionedName @entity {
   id: ID!
-  labelhash: Bytes
-  domain: Domain @derivedFrom(field: "id")
+  domain: Domain
   registrationDate: Int!
   winningBidder: Account
   maxBid: BigInt

@@ -15,11 +15,8 @@ import { Account, AuctionedName } from './types/schema'
 var rootNode:ByteArray = byteArrayFromHex("93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae")
 
 export function auctionStarted(event: AuctionStarted): void {
-  let labelhash = event.params.hash
-  let node = crypto.keccak256(concat(rootNode, labelhash))
-  let auction = new AuctionedName(node.toHex())
+  let auction = new AuctionedName(event.params.hash.toHex())
 
-  auction.labelhash = labelhash;
   auction.registrationDate = event.params.registrationDate as i32
   auction.bidCount = 0
   auction.maxBid = null
@@ -29,8 +26,12 @@ export function auctionStarted(event: AuctionStarted): void {
 }
 
 export function bidRevealed(event: BidRevealed): void {
-  let node = crypto.keccak256(concat(rootNode, event.params.hash));
-  let auction = AuctionedName.load(node.toHex())
+  if(event.params.status == 5) {
+    // Actually a cancelled bid; hash is not the label hash
+    return
+  }
+
+  let auction = AuctionedName.load(event.params.hash.toHex())
   switch(event.params.status) {
     case 0: // Harmless invalid bid
     case 1: // Bid revealed late
@@ -56,11 +57,11 @@ export function bidRevealed(event: BidRevealed): void {
 }
 
 export function hashRegistered(event: HashRegistered): void {
-  let node = crypto.keccak256(concat(rootNode, event.params.hash));
-  let auction = AuctionedName.load(node.toHex())
+  let auction = AuctionedName.load(event.params.hash.toHex())
   auction.maxBid = event.params.value
   auction.winningBidder = event.params.owner.toHex()
   auction.registrationDate = event.params.registrationDate as i32
+  auction.domain = crypto.keccak256(concat(rootNode, event.params.hash)).toHex();
   auction.state = "FINALIZED"
   auction.save()
 }
