@@ -26,6 +26,7 @@ type AuctionedName @entity {
   id: ID!
   domain: Domain
   registrationDate: Int!
+  releaseDate: Int
   winningBidder: Account
   maxBid: BigInt
   secondBid: BigInt

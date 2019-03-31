@@ -58,7 +58,7 @@ export function bidRevealed(event: BidRevealed): void {
 
 export function hashRegistered(event: HashRegistered): void {
   let auction = AuctionedName.load(event.params.hash.toHex())
-  auction.maxBid = event.params.value
+  auction.secondBid = event.params.value
   auction.winningBidder = event.params.owner.toHex()
   auction.registrationDate = event.params.registrationDate as i32
   auction.domain = crypto.keccak256(concat(rootNode, event.params.hash)).toHex();
@@ -69,6 +69,7 @@ export function hashRegistered(event: HashRegistered): void {
 export function hashReleased(event: HashReleased): void {
   let node = crypto.keccak256(concat(rootNode, event.params.hash));
   let auction = AuctionedName.load(node.toHex())
+  auction.releaseDate = event.block.timestamp as i32
   auction.state = "RELEASED"
   auction.save()
 }

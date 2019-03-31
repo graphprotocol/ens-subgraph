@@ -232,6 +232,15 @@ export class AuctionedName extends Entity {
     this.set("registrationDate", Value.fromI32(value));
   }
 
+  get releaseDate(): i32 {
+    let value = this.get("releaseDate");
+    return value.toI32();
+  }
+
+  set releaseDate(value: i32) {
+    this.set("releaseDate", Value.fromI32(value));
+  }
+
   get winningBidder(): string | null {
     let value = this.get("winningBidder");
     if (value === null) {
