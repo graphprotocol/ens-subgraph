@@ -67,16 +67,14 @@ export function hashRegistered(event: HashRegistered): void {
 }
 
 export function hashReleased(event: HashReleased): void {
-  let node = crypto.keccak256(concat(rootNode, event.params.hash));
-  let auction = AuctionedName.load(node.toHex())
+  let auction = AuctionedName.load(event.params.hash.toHex())
   auction.releaseDate = event.block.timestamp as i32
   auction.state = "RELEASED"
   auction.save()
 }
 
 export function hashInvalidated(event: HashInvalidated): void {
-  let node = crypto.keccak256(concat(rootNode, event.params.hash));
-  let auction = AuctionedName.load(node.toHex())
+  let auction = AuctionedName.load(event.params.hash.toHex())
   auction.state = "FORBIDDEN"
   auction.save()
 }
