@@ -53,7 +53,7 @@ dataSources:
           handler: bidRevealed
         - event: HashRegistered(bytes32,address,uint256,uint256)
           handler: hashRegistered
-        - event: HashInvalidated(bytes32,bytes32,uint256,uint256)
+        - event: HashInvalidated(bytes32,string,uint256,uint256)
           handler: hashInvalidated
         - event: HashReleased(bytes32,uint256)
           handler: hashReleased
