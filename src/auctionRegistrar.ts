@@ -17,7 +17,7 @@ var rootNode:ByteArray = byteArrayFromHex("93cdeb708b7545dc668eb9280176169d1c33c
 export function auctionStarted(event: AuctionStarted): void {
   let auction = new AuctionedName(event.params.hash.toHex())
 
-  auction.registrationDate = event.params.registrationDate as i32
+  auction.registrationDate = event.params.registrationDate.toI32()
   auction.bidCount = 0
   auction.maxBid = null
   auction.secondBid = null
@@ -57,24 +57,24 @@ export function bidRevealed(event: BidRevealed): void {
 }
 
 export function hashRegistered(event: HashRegistered): void {
-  let auction = AuctionedName.load(event.params.hash.toHex())
+  let auction = new AuctionedName(event.params.hash.toHex())
   auction.secondBid = event.params.value
   auction.winningBidder = event.params.owner.toHex()
-  auction.registrationDate = event.params.registrationDate as i32
+  auction.registrationDate = event.params.registrationDate.toI32()
   auction.domain = crypto.keccak256(concat(rootNode, event.params.hash)).toHex();
   auction.state = "FINALIZED"
   auction.save()
 }
 
 export function hashReleased(event: HashReleased): void {
-  let auction = AuctionedName.load(event.params.hash.toHex())
-  auction.releaseDate = event.block.timestamp as i32
+  let auction = new AuctionedName(event.params.hash.toHex())
+  auction.releaseDate = event.block.timestamp.toI32()
   auction.state = "RELEASED"
   auction.save()
 }
 
 export function hashInvalidated(event: HashInvalidated): void {
-  let auction = AuctionedName.load(event.params.hash.toHex())
+  let auction = new AuctionedName(event.params.hash.toHex())
   auction.state = "FORBIDDEN"
   auction.save()
 }

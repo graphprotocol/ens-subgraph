@@ -67,7 +67,7 @@ export function newTTL(event: NewTTL): void {
   let node = event.params.node.toHex()
 
   let domain = new Domain(node)
-  domain.ttl = event.params.ttl as i32
+  domain.ttl = event.params.ttl.toI32()
   domain.save()
 }
 
