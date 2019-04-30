@@ -1,4 +1,5 @@
-dist/
+build/
 node_modules/
-types/
+src/types/
 .DS_STORE
+yarn-error.log

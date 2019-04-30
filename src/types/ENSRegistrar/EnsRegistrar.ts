@@ -5,18 +5,19 @@ import {
   JSONValue,
   TypedMap,
   Entity,
+  EthereumTuple,
   Bytes,
   Address,
   BigInt
 } from "@graphprotocol/graph-ts";
 
 export class Transfer extends EthereumEvent {
-  get params(): TransferParams {
-    return new TransferParams(this);
+  get params(): Transfer__Params {
+    return new Transfer__Params(this);
   }
 }
 
-export class TransferParams {
+export class Transfer__Params {
   _event: Transfer;
 
   constructor(event: Transfer) {
@@ -33,12 +34,12 @@ export class TransferParams {
 }
 
 export class NewOwner extends EthereumEvent {
-  get params(): NewOwnerParams {
-    return new NewOwnerParams(this);
+  get params(): NewOwner__Params {
+    return new NewOwner__Params(this);
   }
 }
 
-export class NewOwnerParams {
+export class NewOwner__Params {
   _event: NewOwner;
 
   constructor(event: NewOwner) {
@@ -59,12 +60,12 @@ export class NewOwnerParams {
 }
 
 export class NewResolver extends EthereumEvent {
-  get params(): NewResolverParams {
-    return new NewResolverParams(this);
+  get params(): NewResolver__Params {
+    return new NewResolver__Params(this);
   }
 }
 
-export class NewResolverParams {
+export class NewResolver__Params {
   _event: NewResolver;
 
   constructor(event: NewResolver) {
@@ -81,12 +82,12 @@ export class NewResolverParams {
 }
 
 export class NewTTL extends EthereumEvent {
-  get params(): NewTTLParams {
-    return new NewTTLParams(this);
+  get params(): NewTTL__Params {
+    return new NewTTL__Params(this);
   }
 }
 
-export class NewTTLParams {
+export class NewTTL__Params {
   _event: NewTTL;
 
   constructor(event: NewTTL) {

@@ -62,11 +62,17 @@ type ENSEvent @entity {
   indexedKey: String        # event TextChanged
   key: String               # event TextChanged
   hash: Bytes               # event ContenthashChanged
+  interfaceID: Bytes        # event InterfaceChanged
+  implementer: Bytes        # event InterfaceChanged
+  owner: Bytes              # event AuthorisationChanged
+  target: Bytes             # event AuthorisationChanged
+  isAuthorized: Boolean     # event AuthorisationChanged
 }
 
 type Resolver @entity {
   id: ID!                   # Address of the resolver
   domain: Bytes!            # Domain the resolver is set to
+  # todo - is it possible to derive what kind of resolver it is?
 }
 
 enum Event @entity {
@@ -76,5 +82,7 @@ enum Event @entity {
   PubkeyChanged,
   Textchanged,
   ContenthashChanged,
-  ContentChanged
+  ContentChanged,
+  InterfaceChanged,
+  AuthorisationChanged,
 }
