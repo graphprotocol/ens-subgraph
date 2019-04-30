@@ -1,52 +1,60 @@
 // Import types and APIs from graph-ts
 import {
-  Address,
   Bytes,
   ByteArray,
   crypto,
 } from '@graphprotocol/graph-ts'
 
 // Import event types from the registrar contract ABI
-import { NewOwner, Transfer as TransferEvent } from './types/ENSRegistrar/EnsRegistrar'
+import { NewOwner, Transfer, NewResolver, NewTTL } from '../types/Registrar/Registrar'
 
 // Import entity types generated from the GraphQL schema
-import { EnsDomain, Transfer } from './types/schema'
+import { Domain, Resolver } from '../types/schema'
 
-// Handler for NewOwner events
-export function newOwner(event: NewOwner): void {
+import { Resolver as ResolverTemplate } from '../types/Registrar/templates'
+
+export function handleNewOwner(event: NewOwner): void {
   let domainBytes = concat(event.params.node, event.params.label)
   let domainHash = crypto.keccak256(domainBytes)
-  let domainId = domainHash.toHex()
+  let domainId = domainHash.toHexString()
 
-  let domain = new EnsDomain(domainId)
+  let domain = new Domain(domainId)
   domain.owner = event.params.owner
   domain.node = event.params.node
   domain.label = event.params.label
+  domain.pastOwners = []
   domain.save()
 }
 
-// Handler for Transfer events
-export function transfer(event: TransferEvent): void {
-  let domainId = event.params.node.toHex()
+export function handleTransfer(event: Transfer): void {
+  // let domainId = event.params.node.toHexString()
+  // let domain = Domain.load(domainId)
+  // domain.owner = event.params.owner
+  // let owners = domain.pastOwners
+  // owners.push(event.params.owner)
+  // domain.pastOwners = owners
+  // domain.save()
+}
 
-  // Create transfer if it does not exists yet
-  let transfer = Transfer.load(domainId)
-  if (transfer == null) {
-    transfer = new Transfer(domainId)
-    transfer.domain = domainId
-    transfer.owners = new Array<Bytes>()
-  }
+export function handleNewResolver(event: NewResolver): void {
+  let domain = new Domain(event.params.node.toHexString())
+  domain.resolver = event.params.resolver
+  domain.save()
 
-  // Add the new owner to the list of historical owners of the domain
-  let owners = transfer.owners
-  owners.push(event.params.owner)
-  transfer.owners = owners
+  let resolver = new Resolver(event.params.resolver.toHexString())
+  resolver.domain = event.params.node
+  resolver.save()
 
-  // Update the domain owner
-  let domain = new EnsDomain(domainId)
-  domain.owner = event.params.owner
+  // This will allow us to catch all new resolvers, and all events emitted by them
+  ResolverTemplate.create(event.params.resolver)
+}
+
+export function handleNewTTL(event: NewTTL): void {
+  let domain = new Domain(event.params.node.toHexString())
+  domain.ttl = event.params.ttl
   domain.save()
 }
+
 
 // Helper for concatenating two byte arrays
 function concat(a: ByteArray, b: ByteArray): ByteArray {

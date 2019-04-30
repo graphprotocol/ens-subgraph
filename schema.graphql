@@ -30,10 +30,10 @@
 
 type Domain @entity {
   id: ID! # the node or the namehash of the domain/subdomain/subsubdomain
-  node: Bytes # all domains sharing a node are all subdomains of that domain
-  label: Bytes # this is what distingushes the subdomains within a domain
+  node: Bytes! # all domains sharing a node are all subdomains of that domain
+  label: Bytes! # this is what distingushes the subdomains within a domain
   resolver: Bytes
-  ttl: Int
+  ttl: BigInt
 
   # todo ford
   domainName: String # null if unknown
