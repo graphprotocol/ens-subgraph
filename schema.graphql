@@ -9,8 +9,11 @@ type Domain @entity {
   ttl: BigInt
 }
 
-  # todo ford
-  domainName: String # null if unknown
+type Name @entity {
+  labelName: String
+  id: ID!
+  name: String!
+}
 
 type Account @entity {
   id: ID!

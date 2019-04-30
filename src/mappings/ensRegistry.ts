@@ -21,6 +21,12 @@ export function newOwner(event: NewOwner): void {
 
   let domain = new Domain(subnode)
 
+  // Get label and node names
+  let labelObject = Name.load(event.params.label.toHex())
+  if (labelObject != null) {
+    domain.labelName = labelObject.name
+  }
+
   domain.owner = account.id
   domain.parent = event.params.node.toHex()
   domain.labelhash = event.params.label
