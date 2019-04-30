@@ -1,26 +1,26 @@
-specVersion: 0.0.1
+specVersion: 0.0.3
 description: A secure & decentralized way to address resources on and off the blockchain using simple, human-readable names. Access domains and transfer history.
-repository: https://github.com/graphprotocol/ens-subgraph
+repository: https://github.com/ensdomains/ens-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ENSRegistrar
+    name: ENSRegistry
     network: mainnet
     source:
       address: '0x314159265dd8dbb310642f98f50c066173c1259b'
-      abi: EnsRegistrar
+      abi: EnsRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/mappings/registrar.ts
+      file: ./src/mappings/ensRegistry.ts
       entities:
         - Domain
-        - Resolver
+        - Account
       abis:
-        - name: EnsRegistrar
-          file: ./abis/EtherscanAbi.json
+        - name: EnsRegistry
+          file: ./abis/Registry.json
       eventHandlers:
         - event: Transfer(bytes32,address)
           handler: transfer
@@ -30,38 +30,30 @@ dataSources:
           handler: newResolver
         - event: NewTTL(bytes32,uint64)
           handler: newTTL
-    templates:
-      - name: Resolver
-        kind: ethereum/contract
-        network: mainnet
-        source:
-          abi: Resolver
-        mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.1
-          language: wasm/assemblyscript
-          file: ./src/mappings/resolver.ts
-          entities:
-            - Resolver
-            - ENSEvent
-            - Domain
-          abis:
-            - name: Resolver
-              file: ./abis/PublicResolver.json
-          eventHandlers:
-            - event: ABIChanged(bytes32,uint256)
-              handler: handleABIChanged
-            - event: AddrChanged(bytes32,address)
-              handler: handleAddrChanged
-            - event: AuthorisationChanged(bytes32,address,address,bool)
-              handler: handleAuthorisationChanged
-            - event: ContenthashChanged(bytes32,bytes)
-              handler: handleContentHashChanged
-            - event: InterfaceChanged(bytes32,bytes4,address)
-              handler: handleInterfaceChanged
-            - event: NameChanged(bytes32,string)
-              handler: handleNameChanged
-            - event: PubkeyChanged(bytes32,bytes32,bytes32)
-              handler: handlePubkeyChanged
-            - event: TextChanged(bytes32,string,string)
-              handler: handleTextChanged
+  - kind: ethereum/contract
+    name: AuctionRegistrar
+    network: mainnet
+    source:
+      address: '0x6090a6e47849629b7245dfa1ca21d94cd15878ef'
+      abi: AuctionRegistrar
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      file: ./src/mappings/auctionRegistrar.ts
+      entities:
+        - AuctionedName
+      abis:
+        - name: AuctionRegistrar
+          file: ./abis/AuctionRegistrar.json
+      eventHandlers:
+        - event: AuctionStarted(bytes32,uint256)
+          handler: auctionStarted
+        - event: BidRevealed(bytes32,address,uint256,uint8)
+          handler: bidRevealed
+        - event: HashRegistered(bytes32,address,uint256,uint256)
+          handler: hashRegistered
+        - event: HashInvalidated(bytes32,string,uint256,uint256)
+          handler: hashInvalidated
+        - event: HashReleased(bytes32,uint256)
+          handler: hashReleased
