@@ -1,13 +1,52 @@
-type EnsDomain @entity {
-  id: ID!             # id is the nameHash of the actual domain
-  node: Bytes         # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
-  label: Bytes        # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth
+type Domain @entity {
+  id: ID!                                                   # id is the nameHash of the actual domain
+  node: Bytes                                               # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
+  label: Bytes                                              # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth
   owner: Bytes!
-  transfers: [Transfer!] @derivedFrom(field: "domain")
+  subDomains: [SubDomains!]! @derivedFrom(field: "domain")
+  pastOwners: [Bytes]!                                      # Past owners, populated by the Transfer event
+
+
+  domainName: String!       # todo fords help
+  resolver: Bytes!
 }
 
-type Transfer @entity {
-  id: ID!             # the domain
-  domain: EnsDomain!
-  owners: [Bytes!]    # where the array contains all past owners, pushed into the array. The newest element is the latest owner
+type SubDomain @entity {
+  id: ID!
+  domain: Bytes!            # Links all subDomains to a single Domain, i.e. makes it easily queryable
+  subdDomainName: String!   # todo fords help
+}
+
+# To query for a specific Event type, query with `where: {type: "AddrChanged"}`, and then only query `a` for null || non-null fields 
+type ENSEvent @entity {
+  # Required by all events
+  id: ID!                   # TODO make something noteworthy, but for now just do 0,1,2,3 etc.
+  type: Event!              # Event type from basic resolver interface
+  node: Bytes!              # Emitted by all events
+  resolver: Bytes!          # Address of the resolver that emitted the event
+
+  # Specific to event types
+  a: Bytes                  # event AddrChanged
+  name: String              # event NameChanged
+  contentType: BigInt       # event ABIChanged
+  x: Bytes                  # event PubkeyChanged
+  y: Bytes                  # event PubkeyChanged
+  indexedKey: String        # event TextChanged
+  key: String               # event TextChanged
+  hash: Bytes               # event ContenthashChanged
+}
+
+type Resolver @entity {
+  id: ID!                   # Address of the resolver
+  domain: Bytes!            # Domain the resolver is set to
+}
+
+enum Event @entity {
+  AddrChanged,
+  NameChanged,
+  ABIChanged,
+  PubkeyChanged,
+  Textchanged,
+  ContenthashChanged,
+  ContentChanged
 }
