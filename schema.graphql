@@ -39,3 +39,77 @@ type AuctionedName @entity {
   bidCount: Int!
   state: AuctionState
 }
+
+# todo - is it possible to derive what kind of resolver it is?
+type Resolver @entity {
+  id: ID!                   # Address of the resolver
+  domain: Bytes!            # Domain the resolver is set to
+}
+
+interface ResolverEvent {
+  id: ID!                   # TODO make something noteworthy, but for now just do 0,1,2,3 etc.
+  type: Event!              # Event type from basic resolver interface
+  node: Bytes!              # Emitted by all events
+  resolver: Bytes!          # Address of the resolver that emitted the event
+}
+
+type AddrChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  address: Bytes!
+}
+
+type NameChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  name: String!
+}
+
+type AbiChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  contentType: BigInt!
+}
+
+type PubkeyChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  x: Bytes!
+  y: Bytes!
+}
+
+type TextChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  indexedKey: String!
+  key: String!
+}
+
+type ContenthashChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  hash: Bytes!
+}
+
+type InterfaceChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  interfaceID: Bytes!
+  implementer: Bytes!
+}
+
+type AuthorisationChanged implements ResolverEvent @entity {
+  id: ID!
+  node: Bytes!
+  resolver: Bytes!
+  owner: Bytes!
+  target: Bytes!
+  isAuthorized: Boolean!
+}
