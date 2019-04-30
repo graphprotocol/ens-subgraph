@@ -1,23 +1,51 @@
+#type Domain @entity {
+#  id: ID!                                                   # id is the nameHash of the actual domain
+#  node: Bytes                                               # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
+#  label: Bytes                                              # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth
+#  owner: Bytes!
+#  subDomains: [SubDomains!]! @derivedFrom(field: "domain")
+#  pastOwners: [Bytes]!                                      # Past owners, populated by the Transfer event
+#
+#
+#  domainName: String!       # todo fords help
+#  resolver: Bytes!
+#  ttl: Int!
+#}
+#
+#type SubDomain @entity {
+#  id: ID!
+#  node: Bytes!
+#  label: Bytes!
+#  owner: Bytes!
+#  subDomains: [SubDomains!]! @derivedFrom(field: "domain")
+#  pastOwners: [Bytes]!                                      # Past owners, populated by the Transfer event
+#
+#
+#  domainName: String!       # todo fords help
+#  resolver: Bytes!
+#  ttl: Int!
+#}
+
+# TODO - delete about, I believe the below will work, but uncertain right now
+
 type Domain @entity {
-  id: ID!                                                   # id is the nameHash of the actual domain
-  node: Bytes                                               # node is the nameHash() of the recursive, lower level domains. It could be just .eth (0x93cdeb....) or it could be mywallet.eth (0x8a075....)
-  label: Bytes                                              # label is the top level domain , i.e. it would be the hash of 'david' in david.mywallet.eth
+  id: ID! # the node or the namehash of the domain/subdomain/subsubdomain
+  node: Bytes # all domains sharing a node are all subdomains of that domain
+  label: Bytes # this is what distingushes the subdomains within a domain
+  resolver: Bytes
+  ttl: Int
+
+  # todo ford
+  domainName: String # null if unknown
+
   owner: Bytes!
-  subDomains: [SubDomains!]! @derivedFrom(field: "domain")
-  pastOwners: [Bytes]!                                      # Past owners, populated by the Transfer event
+  pastOwners: [Bytes!]!
 
-
-  domainName: String!       # todo fords help
-  resolver: Bytes!
+  subDomains: [Domain!]! @derivedFrom(field: "node") # if this domain has subdomains, their nodes will match this ID
 }
 
-type SubDomain @entity {
-  id: ID!
-  domain: Bytes!            # Links all subDomains to a single Domain, i.e. makes it easily queryable
-  subdDomainName: String!   # todo fords help
-}
 
-# To query for a specific Event type, query with `where: {type: "AddrChanged"}`, and then only query `a` for null || non-null fields 
+# To query for a specific Event type, query with `where: {type: "AddrChanged"}`, and then only query `a` for null || non-null fields
 type ENSEvent @entity {
   # Required by all events
   id: ID!                   # TODO make something noteworthy, but for now just do 0,1,2,3 etc.
