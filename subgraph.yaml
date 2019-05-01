@@ -12,24 +12,66 @@ dataSources:
       abi: EnsRegistry
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.1
+      apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/ensRegistry.ts
+      file: ./src/mappings/ensRegistry.ts
       entities:
         - Domain
         - Account
+        - Name
+        - Resolver
       abis:
         - name: EnsRegistry
           file: ./abis/Registry.json
       eventHandlers:
         - event: Transfer(bytes32,address)
-          handler: transfer
+          handler: handleTransfer
         - event: NewOwner(bytes32,bytes32,address)
-          handler: newOwner
+          handler: handleNewOwner
         - event: NewResolver(bytes32,address)
-          handler: newResolver
+          handler: handleNewResolver
         - event: NewTTL(bytes32,uint64)
-          handler: newTTL
+          handler: handleNewTTL
+    templates:
+      - name: Resolver
+        kind: ethereum/contract
+        network: mainnet
+        source:
+          abi: Resolver
+        mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.1
+          language: wasm/assemblyscript
+          file: ./src/mappings/resolver.ts
+          entities:
+            - AddrChanged
+            - NameChanged
+            - AbiChanged
+            - PubkeyChanged
+            - Textchanged
+            - ContenthashChanged
+            - InterfaceChanged
+            - AuthorisationChanged
+          abis:
+            - name: Resolver
+              file: ./abis/PublicResolver.json
+          eventHandlers:
+            - event: ABIChanged(bytes32,uint256)
+              handler: handleABIChanged
+            - event: AddrChanged(bytes32,address)
+              handler: handleAddrChanged
+            - event: AuthorisationChanged(bytes32,address,address,bool)
+              handler: handleAuthorisationChanged
+            - event: ContenthashChanged(bytes32,bytes)
+              handler: handleContentHashChanged
+            - event: InterfaceChanged(bytes32,bytes4,address)
+              handler: handleInterfaceChanged
+            - event: NameChanged(bytes32,string)
+              handler: handleNameChanged
+            - event: PubkeyChanged(bytes32,bytes32,bytes32)
+              handler: handlePubkeyChanged
+            - event: TextChanged(bytes32,string,string)
+              handler: handleTextChanged
   - kind: ethereum/contract
     name: AuctionRegistrar
     network: mainnet
@@ -38,9 +80,9 @@ dataSources:
       abi: AuctionRegistrar
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.1
+      apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/auctionRegistrar.ts
+      file: ./src/mappings/auctionRegistrar.ts
       entities:
         - AuctionedName
       abis:
