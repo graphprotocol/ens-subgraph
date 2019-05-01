@@ -1,21 +1,18 @@
 {
   "name": "ens-subgraph",
+  "version": "1.0.0",
+  "repository": "https://github.com/ensdomains/ens-subgraph",
+  "license": "MIT",
   "scripts": {
-    "codegen": "graph codegen --output-dir src/types/ subgraph.yaml",
-    "build": "graph build subgraph.yaml",
-    "build-ipfs": "graph build --ipfs http://127.0.0.1:5001/api/v0/ subgraph.yaml",
-    "build-wast": "graph build -t wast subgraph.yaml",
-    "create": "graph create --node http://127.0.0.1:8020/ ens",
-    "deploy": "graph deploy --ipfs http://127.0.0.1:5001/api/v0/ --node http://127.0.0.1:8020/ ens",
-    "deploy-thegraph": "graph deploy --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ ensdomains/ens"
+    "codegen": "graph codegen --output-dir src/types/",
+    "create-local": "graph create graphprotocol/ens --node http://127.0.0.1:8020",
+    "build": "graph build",
+    "deploy-local": "graph deploy graphprotocol/ens --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020/",
+    "deploy": "graph deploy --debug graphprotocol/ens --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "watch-local": "graph deploy graphprotocol/ens --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.7.3",
-    "@graphprotocol/graph-ts": "^0.5.1"
-  },
-  "dependencies": {
-    "eth-ens-namehash": "^2.0.8",
-    "web3": "^1.0.0-beta.50",
-    "yarn": "^1.15.2"
+    "@graphprotocol/graph-cli": "^0.10.0",
+    "@graphprotocol/graph-ts": "^0.10.0"
   }
 }
