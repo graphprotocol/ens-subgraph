@@ -14,7 +14,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/mappings/ensRegistry.ts
+      file: ./src/ensRegistry.ts
       entities:
         - Domain
         - Account
@@ -42,7 +42,7 @@ dataSources:
           kind: ethereum/events
           apiVersion: 0.0.1
           language: wasm/assemblyscript
-          file: ./src/mappings/resolver.ts
+          file: ./src/resolver.ts
           entities:
             - AddrChanged
             - NameChanged
@@ -82,7 +82,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/mappings/auctionRegistrar.ts
+      file: ./src/auctionRegistrar.ts
       entities:
         - AuctionedName
       abis:

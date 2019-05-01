@@ -5,12 +5,12 @@ import {
 } from '@graphprotocol/graph-ts'
 
 // Import event types from the registry contract ABI
-import { NewOwner, Transfer, NewResolver, NewTTL } from '../types/ENSRegistry/EnsRegistry'
+import { NewOwner, Transfer, NewResolver, NewTTL } from './types/ENSRegistry/EnsRegistry'
 
 // Import entity types generated from the GraphQL schema
-import { Account, Domain, Name, Resolver } from '../types/schema'
+import { Account, Domain, Name, Resolver } from './types/schema'
 
-import { Resolver as ResolverTemplate } from '../types/ENSRegistry/templates'
+import { Resolver as ResolverTemplate } from './types/ENSRegistry/templates'
 
 
 // Handler for NewOwner events
