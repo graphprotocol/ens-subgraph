@@ -8,74 +8,60 @@ Here we have example queries, so that you don't have to type them in yourself ea
 
 ```graphql
 {
-  domains{
+  domains {
     id
     labelName
     labelhash
-    parent{
+    parent {
       id
     }
-    subdomains{
+    subdomains {
       id
     }
-    owner{
+    owner {
       id
     }
     resolver
     ttl
   }
-  resolvers{
-   id 
+  resolvers {
+    id
     domain
-  }
-  resolverEvents{
-    id
-    resolver
-  }
-  addrChangeds{
-    id
-    resolver
-    address
-  }
-  nameChangeds{
-    id
-    resolver
-    name
-  }
-  abiChangeds{
-    id
-    resolver
-    contentType
-  }
-  pubkeyChangeds{
-    id
-    resolver
-    x
-    y
-  }
-  textChangeds{
-    id
-    resolver
-    indexedKey
-    key
-  }
-  contenthashChangeds{
-    id
-    resolver
-    hash
-  }
-  interfaceChangeds{
-    id
-    resolver
-    interfaceID
-    implementer
-  }
-  authorisationChangeds{
-    id
-    resolver
-    owner
-    target
-    isAuthorized
+    resolverEvents {
+      id
+      node
+      resolver
+      ... on AddrChanged {
+        address
+      }
+      ... on NameChanged {
+        name
+      }
+      ... on AbiChanged {
+        contentType
+      }
+      ... on PubkeyChanged {
+        x
+        y
+      }
+      ... on TextChanged {
+        indexedKey
+        key
+      }
+      ... on ContenthashChanged {
+        hash
+      }
+      ... on InterfaceChanged {
+        interfaceID
+        implementer
+      }
+      ... on AuthorisationChanged {
+        owner
+        target
+        isAuthorized
+      }
+    }
   }
 }
+
 ```

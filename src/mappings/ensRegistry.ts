@@ -54,6 +54,7 @@ export function handleNewResolver(event: NewResolver): void {
 
   let resolver = new Resolver(event.params.resolver.toHexString())
   resolver.domain = event.params.node
+  resolver.resolverEvents = []
   resolver.save()
 
   // This catches all new resolvers contracts dynamically, and all events emitted by them

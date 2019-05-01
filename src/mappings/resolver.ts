@@ -18,15 +18,15 @@ import {
   ContenthashChanged,
   InterfaceChanged,
   AuthorisationChanged,
-  CountEvent
+  ResolverEventCount
 } from '../types/schema'
 
 import { BigInt } from "@graphprotocol/graph-ts"
 
 export function handleAddrChanged(event: AddrChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   if (count == null){
-    count = new CountEvent("1")
+    count = new ResolverEventCount("1")
     count.count = BigInt.fromI32(0)
   }
   count.count = count.count.plus(BigInt.fromI32(1))
@@ -42,7 +42,7 @@ export function handleAddrChanged(event: AddrChangedEvent): void {
 
 
 export function handleNameChanged(event: NameChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -55,7 +55,7 @@ export function handleNameChanged(event: NameChangedEvent): void {
 }
 
 export function handleABIChanged(event: ABIChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -68,7 +68,7 @@ export function handleABIChanged(event: ABIChangedEvent): void {
 }
 
 export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -82,7 +82,7 @@ export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
 }
 
 export function handleTextChanged(event: TextChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -96,7 +96,7 @@ export function handleTextChanged(event: TextChangedEvent): void {
 }
 
 export function handleContentHashChanged(event: ContenthashChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -109,7 +109,7 @@ export function handleContentHashChanged(event: ContenthashChangedEvent): void {
 }
 
 export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()
@@ -123,7 +123,7 @@ export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
 }
 
 export function handleAuthorisationChanged(event: AuthorisationChangedEvent): void {
-  let count = CountEvent.load("1")
+  let count = ResolverEventCount.load("1")
   count.count = count.count.plus(BigInt.fromI32(1))
   count.save()
   let id = count.count.toString()

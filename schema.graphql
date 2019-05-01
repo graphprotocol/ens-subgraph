@@ -42,6 +42,7 @@ type AuctionedName @entity {
 type Resolver @entity {
   id: ID!
   domain: Bytes!
+  resolverEvents: [ResolverEvent!]! @derivedFrom(field: "resolver")
 }
 
 interface ResolverEvent {
@@ -51,7 +52,7 @@ interface ResolverEvent {
 }
 
 # Used for ResolverEvent IDs
-type CountResolverEvent @entity {
+type ResolverEventCount @entity {
   id: ID!                   # Just "1"
   count: BigInt!
 }
