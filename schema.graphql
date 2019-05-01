@@ -1,18 +1,23 @@
 type Domain @entity {
   id: ID!
+  labelName: String
   labelhash: Bytes
   parent: Domain
-  subdomains: [Domain!]! @derivedFrom(field: "parent")
-  subdomainCount: Int!
+  subdomains: [Domain!]! @derivedFrom(field: "parent")  # can count domains from length of array
   owner: Account!
   resolver: Bytes
-  ttl: Int
+  ttl: BigInt
+}
+
+type Name @entity {
+  labelName: String
+  id: ID!
+  name: String!
 }
 
 type Account @entity {
   id: ID!
-  domains: [Domain!]! @derivedFrom(field: "owner")
-  domainCount: Int!
+  domains: [Domain!]! @derivedFrom(field: "owner") # can count domains from length of array
 }
 
 enum AuctionState {
@@ -32,4 +37,83 @@ type AuctionedName @entity {
   secondBid: BigInt
   bidCount: Int!
   state: AuctionState
+}
+
+type Resolver @entity {
+  id: ID!
+  domain: Bytes!
+  resolverEvents: [ResolverEvent!]! @derivedFrom(field: "resolver")
+}
+
+interface ResolverEvent {
+  id: ID!                   # Count events in order - 0,1,2,3 etc
+  node: Bytes!
+  resolver: Bytes!          # Address of the resolver that emitted the event
+}
+
+# Used for ResolverEvent IDs
+type ResolverEventCount @entity {
+  id: ID!                   # Just "1"
+  count: BigInt!
+}
+
+type AddrChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  address: Bytes!
+}
+
+type NameChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  name: String!
+}
+
+type AbiChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  contentType: BigInt!
+}
+
+type PubkeyChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  x: Bytes!
+  y: Bytes!
+}
+
+type TextChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  indexedKey: String!
+  key: String!
+}
+
+type ContenthashChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  hash: Bytes!
+}
+
+type InterfaceChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  interfaceID: Bytes!
+  implementer: Bytes!
+}
+
+type AuthorisationChanged implements ResolverEvent @entity {
+  id: ID!
+  resolver: Bytes!
+  node: Bytes!
+  owner: Bytes!
+  target: Bytes!
+  isAuthorized: Boolean!
 }
