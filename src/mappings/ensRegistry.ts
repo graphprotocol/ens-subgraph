@@ -1,7 +1,5 @@
 // Import types and APIs from graph-ts
 import {
-  Address,
-  Bytes,
   ByteArray,
   crypto,
 } from '@graphprotocol/graph-ts'
@@ -17,11 +15,10 @@ import { Resolver as ResolverTemplate } from '../types/ENSRegistry/templates'
 
 // Handler for NewOwner events
 export function handleNewOwner(event: NewOwner): void {
-  let subnode = crypto.keccak256(concat(event.params.node, event.params.label)).toHexString()
-
   let account = new Account(event.params.owner.toHexString())
   account.save()
 
+  let subnode = crypto.keccak256(concat(event.params.node, event.params.label)).toHexString()
   let domain = new Domain(subnode)
 
   // Get label and node names
@@ -34,7 +31,6 @@ export function handleNewOwner(event: NewOwner): void {
   domain.parent = event.params.node.toHexString()
   domain.labelhash = event.params.label
   domain.save()
-
 }
 
 // Handler for Transfer events
@@ -60,7 +56,7 @@ export function handleNewResolver(event: NewResolver): void {
   resolver.domain = event.params.node
   resolver.save()
 
-  // This will allow us to catch all new resolvers, and all events emitted by them
+  // This catches all new resolvers contracts dynamically, and all events emitted by them
   ResolverTemplate.create(event.params.resolver)
 }
 

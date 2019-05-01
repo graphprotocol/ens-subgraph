@@ -18,6 +18,8 @@ dataSources:
       entities:
         - Domain
         - Account
+        - Name
+        - Resolver
       abis:
         - name: EnsRegistry
           file: ./abis/Registry.json
@@ -42,8 +44,6 @@ dataSources:
           language: wasm/assemblyscript
           file: ./src/mappings/resolver.ts
           entities:
-            - Resolver
-            - ResolverEvent
             - AddrChanged
             - NameChanged
             - AbiChanged

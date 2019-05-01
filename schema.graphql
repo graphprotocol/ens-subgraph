@@ -4,7 +4,7 @@ type Domain @entity {
   labelhash: Bytes
   parent: Domain
   subdomains: [Domain!]! @derivedFrom(field: "parent")
-  subdomainCount: Int! # todo - doesnt seem in use
+  subdomainCount: Int!
   owner: Account!
   resolver: Bytes
   ttl: BigInt
@@ -19,7 +19,7 @@ type Name @entity {
 type Account @entity {
   id: ID!
   domains: [Domain!]! @derivedFrom(field: "owner")
-  domainCount: Int! # todo - doesnt seem in use
+  domainCount: Int!
 }
 
 enum AuctionState {
@@ -41,41 +41,48 @@ type AuctionedName @entity {
   state: AuctionState
 }
 
-# todo - is it possible to derive what kind of resolver it is?
 type Resolver @entity {
-  id: ID!                   # Address of the resolver
-  domain: Bytes!            # Domain the resolver is set to
+  id: ID!                   
+  domain: Bytes!
 }
 
 interface ResolverEvent {
-  id: ID!                   # From field node # Todo - figure out IDs
+  id: ID!                   # Count events in order - 0,1,2,3 etc
+  node: Bytes!
   resolver: Bytes!          # Address of the resolver that emitted the event
 }
 
-# Todo - does this affect entity Domain - to ask ENS
+# Used for ResolverEvent IDs
+type CountResolverEvent @entity {
+  id: ID!                   # Just "1"
+  count: BigInt!
+}
+
 type AddrChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   address: Bytes!
 }
 
-# Todo - does this affect entity Domain - to ask ENS
 type NameChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   name: String!
 }
 
-# todo - do any other events affect domain
 type AbiChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   contentType: BigInt!
 }
 
 type PubkeyChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   x: Bytes!
   y: Bytes!
 }
@@ -83,6 +90,7 @@ type PubkeyChanged implements ResolverEvent @entity {
 type TextChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   indexedKey: String!
   key: String!
 }
@@ -90,12 +98,14 @@ type TextChanged implements ResolverEvent @entity {
 type ContenthashChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   hash: Bytes!
 }
 
 type InterfaceChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   interfaceID: Bytes!
   implementer: Bytes!
 }
@@ -103,6 +113,7 @@ type InterfaceChanged implements ResolverEvent @entity {
 type AuthorisationChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!
+  node: Bytes!
   owner: Bytes!
   target: Bytes!
   isAuthorized: Boolean!
