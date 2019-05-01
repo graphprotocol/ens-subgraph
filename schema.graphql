@@ -3,8 +3,7 @@ type Domain @entity {
   labelName: String
   labelhash: Bytes
   parent: Domain
-  subdomains: [Domain!]! @derivedFrom(field: "parent")
-  subdomainCount: Int!
+  subdomains: [Domain!]! @derivedFrom(field: "parent")  # can count domains from length of array
   owner: Account!
   resolver: Bytes
   ttl: BigInt
@@ -18,8 +17,7 @@ type Name @entity {
 
 type Account @entity {
   id: ID!
-  domains: [Domain!]! @derivedFrom(field: "owner")
-  domainCount: Int!
+  domains: [Domain!]! @derivedFrom(field: "owner") # can count domains from length of array
 }
 
 enum AuctionState {
@@ -42,7 +40,7 @@ type AuctionedName @entity {
 }
 
 type Resolver @entity {
-  id: ID!                   
+  id: ID!
   domain: Bytes!
 }
 
