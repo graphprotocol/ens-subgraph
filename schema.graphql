@@ -1,9 +1,10 @@
 type Domain @entity {
   id: ID!
+  labelName: String
   labelhash: Bytes
   parent: Domain
   subdomains: [Domain!]! @derivedFrom(field: "parent")
-  subdomainCount: Int!
+  subdomainCount: Int! # todo - doesnt seem in use
   owner: Account!
   resolver: Bytes
   ttl: BigInt
@@ -18,7 +19,7 @@ type Name @entity {
 type Account @entity {
   id: ID!
   domains: [Domain!]! @derivedFrom(field: "owner")
-  domainCount: Int!
+  domainCount: Int! # todo - doesnt seem in use
 }
 
 enum AuctionState {
@@ -47,36 +48,33 @@ type Resolver @entity {
 }
 
 interface ResolverEvent {
-  id: ID!                   # TODO make something noteworthy, but for now just do 0,1,2,3 etc.
-  type: Event!              # Event type from basic resolver interface
-  node: Bytes!              # Emitted by all events
+  id: ID!                   # From field node # Todo - figure out IDs
   resolver: Bytes!          # Address of the resolver that emitted the event
 }
 
+# Todo - does this affect entity Domain - to ask ENS
 type AddrChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   address: Bytes!
 }
 
+# Todo - does this affect entity Domain - to ask ENS
 type NameChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   name: String!
 }
 
+# todo - do any other events affect domain
 type AbiChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   contentType: BigInt!
 }
 
 type PubkeyChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   x: Bytes!
   y: Bytes!
@@ -84,7 +82,6 @@ type PubkeyChanged implements ResolverEvent @entity {
 
 type TextChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   indexedKey: String!
   key: String!
@@ -92,14 +89,12 @@ type TextChanged implements ResolverEvent @entity {
 
 type ContenthashChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   hash: Bytes!
 }
 
 type InterfaceChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   interfaceID: Bytes!
   implementer: Bytes!
@@ -107,7 +102,6 @@ type InterfaceChanged implements ResolverEvent @entity {
 
 type AuthorisationChanged implements ResolverEvent @entity {
   id: ID!
-  node: Bytes!
   resolver: Bytes!
   owner: Bytes!
   target: Bytes!
