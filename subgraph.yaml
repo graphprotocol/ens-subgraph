@@ -69,32 +69,32 @@ dataSources:
           handler: handleNameChanged
         - event: PubkeyChanged(bytes32,bytes32,bytes32)
           handler: handlePubkeyChanged
-        - event: TextChanged(bytes32,string,string)
-          handler: handleTextChanged
-#  - kind: ethereum/contract
-#    name: AuctionRegistrar
-#    network: mainnet
-#    source:
-#      address: '0x6090a6e47849629b7245dfa1ca21d94cd15878ef'
-#      abi: AuctionRegistrar
-#    mapping:
-#      kind: ethereum/events
-#      apiVersion: 0.0.2
-#      language: wasm/assemblyscript
-#      file: ./src/auctionRegistrar.ts
-#      entities:
-#        - AuctionedName
-#      abis:
-#        - name: AuctionRegistrar
-#          file: ./abis/AuctionRegistrar.json
-#      eventHandlers:
-#        - event: AuctionStarted(bytes32,uint256)
-#          handler: auctionStarted
-#        - event: BidRevealed(bytes32,address,uint256,uint8)
-#          handler: bidRevealed
-#        - event: HashRegistered(bytes32,address,uint256,uint256)
-#          handler: hashRegistered
-#        - event: HashInvalidated(bytes32,string,uint256,uint256)
-#          handler: hashInvalidated
-#        - event: HashReleased(bytes32,uint256)
-#          handler: hashReleased
+#        - event: TextChanged(bytes32,string,string)
+#          handler: handleTextChanged
+  - kind: ethereum/contract
+    name: AuctionRegistrar
+    network: mainnet
+    source:
+      address: '0x6090a6e47849629b7245dfa1ca21d94cd15878ef'
+      abi: AuctionRegistrar
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      file: ./src/auctionRegistrar.ts
+      entities:
+        - AuctionedName
+      abis:
+        - name: AuctionRegistrar
+          file: ./abis/AuctionRegistrar.json
+      eventHandlers:
+        - event: AuctionStarted(bytes32,uint256)
+          handler: auctionStarted
+        - event: BidRevealed(bytes32,address,uint256,uint8)
+          handler: bidRevealed
+        - event: HashRegistered(bytes32,address,uint256,uint256)
+          handler: hashRegistered
+        - event: HashInvalidated(bytes32,string,uint256,uint256)
+          handler: hashInvalidated
+        - event: HashReleased(bytes32,uint256)
+          handler: hashReleased
