@@ -1,6 +1,7 @@
 type Domain @entity {
   id: ID!
   labelhash: Bytes
+  labelName: String
   parent: Domain
   subdomains: [Domain!]! @derivedFrom(field: "parent")
   subdomainCount: Int!
