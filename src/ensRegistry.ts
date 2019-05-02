@@ -58,7 +58,7 @@ export function handleNewResolver(event: NewResolver): void {
   resolver.save()
 
   // This catches all new resolvers contracts dynamically, and all events emitted by them
-  ResolverTemplate.create(event.params.resolver)
+  // ResolverTemplate.create(event.params.resolver)
 }
 
 // Handler for NewTTL events

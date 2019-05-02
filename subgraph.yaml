@@ -32,70 +32,69 @@ dataSources:
           handler: handleNewResolver
         - event: NewTTL(bytes32,uint64)
           handler: handleNewTTL
-    templates:
-      - name: Resolver
-        kind: ethereum/contract
-        network: mainnet
-        source:
-          abi: Resolver
-        mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.1
-          language: wasm/assemblyscript
-          file: ./src/resolver.ts
-          entities:
-            - AddrChanged
-            - NameChanged
-            - AbiChanged
-            - PubkeyChanged
-            - Textchanged
-            - ContenthashChanged
-            - InterfaceChanged
-            - AuthorisationChanged
-          abis:
-            - name: Resolver
-              file: ./abis/PublicResolver.json
-          eventHandlers:
-            - event: ABIChanged(bytes32,uint256)
-              handler: handleABIChanged
-            - event: AddrChanged(bytes32,address)
-              handler: handleAddrChanged
-            - event: AuthorisationChanged(bytes32,address,address,bool)
-              handler: handleAuthorisationChanged
-            - event: ContenthashChanged(bytes32,bytes)
-              handler: handleContentHashChanged
-            - event: InterfaceChanged(bytes32,bytes4,address)
-              handler: handleInterfaceChanged
-            - event: NameChanged(bytes32,string)
-              handler: handleNameChanged
-            - event: PubkeyChanged(bytes32,bytes32,bytes32)
-              handler: handlePubkeyChanged
-            - event: TextChanged(bytes32,string,string)
-              handler: handleTextChanged
   - kind: ethereum/contract
-    name: AuctionRegistrar
+    name: Resolver
     network: mainnet
     source:
-      address: '0x6090a6e47849629b7245dfa1ca21d94cd15878ef'
-      abi: AuctionRegistrar
+      abi: Resolver
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.2
       language: wasm/assemblyscript
-      file: ./src/auctionRegistrar.ts
+      file: ./src/resolver.ts
       entities:
-        - AuctionedName
+        - AddrChanged
+        - NameChanged
+        - AbiChanged
+        - PubkeyChanged
+        - Textchanged
+        - ContenthashChanged
+        - InterfaceChanged
+        - AuthorisationChanged
       abis:
-        - name: AuctionRegistrar
-          file: ./abis/AuctionRegistrar.json
+        - name: Resolver
+          file: ./abis/PublicResolver.json
       eventHandlers:
-        - event: AuctionStarted(bytes32,uint256)
-          handler: auctionStarted
-        - event: BidRevealed(bytes32,address,uint256,uint8)
-          handler: bidRevealed
-        - event: HashRegistered(bytes32,address,uint256,uint256)
-          handler: hashRegistered
-        - event: HashInvalidated(bytes32,string,uint256,uint256)
-          handler: hashInvalidated
-        - event: HashReleased(bytes32,uint256)
-          handler: hashReleased
+        - event: ABIChanged(bytes32,uint256)
+          handler: handleABIChanged
+        - event: AddrChanged(bytes32,address)
+          handler: handleAddrChanged
+        - event: AuthorisationChanged(bytes32,address,address,bool)
+          handler: handleAuthorisationChanged
+        - event: ContenthashChanged(bytes32,bytes)
+          handler: handleContentHashChanged
+        - event: InterfaceChanged(bytes32,bytes4,address)
+          handler: handleInterfaceChanged
+        - event: NameChanged(bytes32,string)
+          handler: handleNameChanged
+        - event: PubkeyChanged(bytes32,bytes32,bytes32)
+          handler: handlePubkeyChanged
+        - event: TextChanged(bytes32,string,string)
+          handler: handleTextChanged
+#  - kind: ethereum/contract
+#    name: AuctionRegistrar
+#    network: mainnet
+#    source:
+#      address: '0x6090a6e47849629b7245dfa1ca21d94cd15878ef'
+#      abi: AuctionRegistrar
+#    mapping:
+#      kind: ethereum/events
+#      apiVersion: 0.0.2
+#      language: wasm/assemblyscript
+#      file: ./src/auctionRegistrar.ts
+#      entities:
+#        - AuctionedName
+#      abis:
+#        - name: AuctionRegistrar
+#          file: ./abis/AuctionRegistrar.json
+#      eventHandlers:
+#        - event: AuctionStarted(bytes32,uint256)
+#          handler: auctionStarted
+#        - event: BidRevealed(bytes32,address,uint256,uint8)
+#          handler: bidRevealed
+#        - event: HashRegistered(bytes32,address,uint256,uint256)
+#          handler: hashRegistered
+#        - event: HashInvalidated(bytes32,string,uint256,uint256)
+#          handler: hashInvalidated
+#        - event: HashReleased(bytes32,uint256)
+#          handler: hashReleased
