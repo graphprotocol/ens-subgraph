@@ -9,12 +9,6 @@ type Domain @entity {
   ttl: BigInt
 }
 
-type Name @entity {
-  labelName: String
-  id: ID!
-  name: String!
-}
-
 type Account @entity {
   id: ID!
   domains: [Domain!]! @derivedFrom(field: "owner") # can count domains from length of array
