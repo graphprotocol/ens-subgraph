@@ -1,8 +1,8 @@
 type Domain @entity {
-  id: ID!
-  labelName: String
-  labelhash: Bytes
-  parent: Domain
+  id: ID!               # Is the hash of parent and labelhash
+  labelName: String     # is the human readable label name (imported from CSV)
+  labelhash: Bytes      # It is keccak256(labelName)
+  parent: Domain        # is it the node hash
   subdomains: [Domain!]! @derivedFrom(field: "parent")  # can count domains from length of array
   owner: Account!
   resolver: Bytes
