@@ -10,9 +10,6 @@ import { NewOwner, Transfer, NewResolver, NewTTL } from './types/ENSRegistry/Ens
 // Import entity types generated from the GraphQL schema
 import { Account, Domain, Name, Resolver } from './types/schema'
 
-import { Resolver as ResolverTemplate } from './types/ENSRegistry/templates'
-
-
 // Handler for NewOwner events
 export function handleNewOwner(event: NewOwner): void {
   let account = new Account(event.params.owner.toHexString())

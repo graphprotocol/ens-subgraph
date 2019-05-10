@@ -7,7 +7,7 @@ import {
   NameChanged as NameChangedEvent,
   PubkeyChanged as PubkeyChangedEvent,
   TextChanged as TextChangedEvent
-} from './types/ENSRegistry/templates/Resolver/Resolver'
+} from './types/Resolver/Resolver'
 
 import {
   AddrChanged,
