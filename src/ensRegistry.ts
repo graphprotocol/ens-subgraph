@@ -72,15 +72,15 @@ export function handleTransfer(event: Transfer): void {
 
 // Handler for NewResolver events
 export function handleNewResolver(event: NewResolver): void {
+  let id = event.params.resolver.toHexString().concat('-').concat(event.params.node.toHexString())
+  let resolver = new Resolver(id)
+  resolver.domain = event.params.node.toHexString()
+  resolver.save()
+
   let node = event.params.node.toHexString()
   let domain = new Domain(node)
-  domain.resolver = event.params.resolver
+  domain.resolver = id
   domain.save()
-
-  let resolver = new Resolver(event.params.resolver.toHexString())
-  resolver.domain = event.params.node
-  resolver.resolverEvents = []
-  resolver.save()
 }
 
 // Handler for NewTTL events
