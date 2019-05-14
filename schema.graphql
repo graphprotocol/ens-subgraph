@@ -47,12 +47,6 @@ interface ResolverEvent {
   resolverID: String!       # Used to derive relationships to Resolvers
 }
 
-# Used for ResolverEvent IDs
-type ResolverEventCount @entity {
-  id: ID!                   # Just "1"
-  count: BigInt!
-}
-
 type AddrChanged implements ResolverEvent @entity {
   id: ID!
   resolver: Bytes!

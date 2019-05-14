@@ -18,21 +18,10 @@ import {
   ContenthashChanged,
   InterfaceChanged,
   AuthorisationChanged,
-  ResolverEventCount
 } from './types/schema'
 
-import { BigInt } from "@graphprotocol/graph-ts"
-
 export function handleAddrChanged(event: AddrChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  if (count == null){
-    count = new ResolverEventCount("1")
-    count.count = BigInt.fromI32(0)
-  }
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new AddrChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -43,11 +32,7 @@ export function handleAddrChanged(event: AddrChangedEvent): void {
 
 
 export function handleNameChanged(event: NameChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new NameChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -57,11 +42,7 @@ export function handleNameChanged(event: NameChangedEvent): void {
 }
 
 export function handleABIChanged(event: ABIChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new AbiChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -71,11 +52,7 @@ export function handleABIChanged(event: ABIChangedEvent): void {
 }
 
 export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new PubkeyChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -87,11 +64,7 @@ export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
 
 // Currently not in use - follow this issue for status - https://github.com/graphprotocol/graph-node/issues/913
 // export function handleTextChanged(event: TextChangedEvent): void {
-//   let count = ResolverEventCount.load("1")
-//   count.count = count.count.plus(BigInt.fromI32(1))
-//   count.save()
-//   let id = count.count.toString()
-//
+//   let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
 //   let resolverEvent = new TextChanged(id)
 //   resolverEvent.resolver = event.address
 //   resolverEvent.node = event.params.node
@@ -102,11 +75,7 @@ export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
 // }
 
 export function handleContentHashChanged(event: ContenthashChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new ContenthashChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -116,11 +85,7 @@ export function handleContentHashChanged(event: ContenthashChangedEvent): void {
 }
 
 export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new InterfaceChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
@@ -131,11 +96,7 @@ export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
 }
 
 export function handleAuthorisationChanged(event: AuthorisationChangedEvent): void {
-  let count = ResolverEventCount.load("1")
-  count.count = count.count.plus(BigInt.fromI32(1))
-  count.save()
-  let id = count.count.toString()
-
+  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
   let resolverEvent = new AuthorisationChanged(id)
   resolverEvent.resolver = event.address
   resolverEvent.node = event.params.node
