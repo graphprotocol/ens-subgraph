@@ -1,9 +1,9 @@
 type Domain @entity {
-  id: ID!               # Is the hash of parent and labelhash
-  labelName: String     # is the human readable label name (imported from CSV)
-  labelhash: Bytes      # It is keccak256(labelName)
-  parent: Domain        # is it the node hash
-  subdomains: [Domain!]! @derivedFrom(field: "parent")  # can count domains from length of array
+  id: ID!               # The namehash of the name
+  labelName: String     # The human readable label name (imported from CSV), if known
+  labelhash: Bytes      # keccak256(labelName)
+  parent: Domain        # The namehash (id) of the parent name
+  subdomains: [Domain!]! @derivedFrom(field: "parent")  # Can count domains from length of array
   owner: Account!
   resolver: Bytes
   ttl: BigInt
@@ -11,7 +11,7 @@ type Domain @entity {
 
 type Account @entity {
   id: ID!
-  domains: [Domain!]! @derivedFrom(field: "owner") # can count domains from length of array
+  domains: [Domain!]! @derivedFrom(field: "owner") # Can count domains from length of array
 }
 
 enum AuctionState {
