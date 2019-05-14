@@ -5,7 +5,7 @@ type Domain @entity {
   parent: Domain        # The namehash (id) of the parent name
   subdomains: [Domain!]! @derivedFrom(field: "parent")  # Can count domains from length of array
   owner: Account!
-  resolver: Bytes
+  resolver: Resolver
   ttl: BigInt
 }
 
@@ -36,7 +36,7 @@ type AuctionedName @entity {
 
 type Resolver @entity {
   id: ID!
-  domain: Bytes!
+  domain: Domain!
   resolverEvents: [ResolverEvent!]! @derivedFrom(field: "resolver")
 }
 
