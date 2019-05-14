@@ -13,7 +13,12 @@ import { Account, Domain, Resolver } from './types/schema'
 
 // Handler for NewOwner events
 export function handleNewOwner(event: NewOwner): void {
-  let account = new Account(event.params.owner.toHexString())
+  let account = Account.load(event.params.owner.toHexString())
+  if (account == null){
+    account = new Account(event.params.owner.toHexString())
+    account.domainCount = 0
+  }
+  account.domainCount = account.domainCount + 1
   account.save()
 
   let subnode = crypto.keccak256(concat(event.params.node, event.params.label)).toHexString()
@@ -33,13 +38,35 @@ export function handleNewOwner(event: NewOwner): void {
 
 // Handler for Transfer events
 export function handleTransfer(event: Transfer): void {
-  let account = new Account(event.params.owner.toHexString())
-  account.save()
+  let node = event.params.node.toHexString()
+  let oldDomain = Domain.load(node)
+
+  // if domain does exist, we must minus that owners domain count
+  if (oldDomain != null) {
+    let oldOwner = Account.load(oldDomain.owner)
+    if (oldOwner == null){
+      oldOwner = new Account(oldDomain.owner)
+      oldOwner.domainCount = 0
+      oldOwner.save()
+      // In most cases we minus one
+    } else {
+      oldOwner.domainCount = oldOwner.domainCount - 1
+      oldOwner.save()
+    }
+  }
+
+  // Update Account count
+  let newAccount = Account.load(event.params.owner.toHexString())
+  if (newAccount == null){
+    newAccount = new Account(event.params.owner.toHexString())
+    newAccount.domainCount = 0
+  }
+  newAccount.domainCount = newAccount.domainCount + 1
+  newAccount.save()
 
   // Update the domain owner
-  let node = event.params.node.toHexString()
   let domain = new Domain(node)
-  domain.owner = account.id
+  domain.owner = newAccount.id
   domain.save()
 }
 

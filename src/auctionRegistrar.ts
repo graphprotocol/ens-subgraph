@@ -40,7 +40,11 @@ export function bidRevealed(event: BidRevealed): void {
       auction.bidCount += 1
       break;
     case 2: // New winning bid
-      let account = new Account(event.params.owner.toHex())
+      let account = Account.load(event.params.owner.toHex())
+      if (account == null){
+        account = new Account(event.params.owner.toHex())
+        account.domainCount = 0
+      }
       account.save()
 
       auction.secondBid = auction.maxBid
