@@ -37,80 +37,73 @@ type AuctionedName @entity {
 type Resolver @entity {
   id: ID!                   # Concatenation of resolver address and namehash
   domain: Domain!
+  address: Bytes!
   resolverEvents: [ResolverEvent!]! @derivedFrom(field: "resolverID")
 }
 
 interface ResolverEvent {
   id: ID!                   # Concatenation of block number and log ID
   node: Bytes!
-  resolver: Bytes!          # Address of the resolver that emitted the event
-  resolverID: String!       # Used to derive relationships to Resolvers
+  resolverID: Resolver!     # Used to derive relationships to Resolvers
 }
 
 type AddrChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  address: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
+  a: Bytes!
 }
 
 type NameChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
+  resolverID: Resolver!
   name: String!
-  resolverID: String!
 }
 
 type AbiChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
   contentType: BigInt!
 }
 
 type PubkeyChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
   x: Bytes!
   y: Bytes!
 }
 
-type TextChanged implements ResolverEvent @entity {
-  id: ID!
-  resolver: Bytes!
-  node: Bytes!
-  resolverID: String!
-  indexedKey: String!
-  key: String!
-}
+# Currently not in use - follow this issue for status - https://github.com/graphprotocol/graph-node/issues/913
+#type TextChanged implements ResolverEvent @entity {
+#  id: ID!
+#  node: Bytes!
+#  resolverID: String!
+#  indexedKey: String!
+#  key: String!
+#}
 
 type ContenthashChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
   hash: Bytes!
 }
 
 type InterfaceChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
   interfaceID: Bytes!
   implementer: Bytes!
 }
 
 type AuthorisationChanged implements ResolverEvent @entity {
   id: ID!
-  resolver: Bytes!
   node: Bytes!
-  resolverID: String!
+  resolverID: Resolver!
   owner: Bytes!
   target: Bytes!
   isAuthorized: Boolean!

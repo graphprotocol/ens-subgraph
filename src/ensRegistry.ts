@@ -44,15 +44,8 @@ export function handleTransfer(event: Transfer): void {
   // if domain does exist, we must minus that owners domain count
   if (oldDomain != null) {
     let oldOwner = Account.load(oldDomain.owner)
-    if (oldOwner == null){
-      oldOwner = new Account(oldDomain.owner)
-      oldOwner.domainCount = 0
-      oldOwner.save()
-      // In most cases we minus one
-    } else {
       oldOwner.domainCount = oldOwner.domainCount - 1
       oldOwner.save()
-    }
   }
 
   // Update Account count
@@ -75,6 +68,7 @@ export function handleNewResolver(event: NewResolver): void {
   let id = event.params.resolver.toHexString().concat('-').concat(event.params.node.toHexString())
   let resolver = new Resolver(id)
   resolver.domain = event.params.node.toHexString()
+  resolver.address = event.address
   resolver.save()
 
   let node = event.params.node.toHexString()

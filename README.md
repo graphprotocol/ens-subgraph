@@ -21,18 +21,22 @@ Here we have example queries, so that you don't have to type them in yourself ea
     owner {
       id
     }
-    resolver
+    resolver {
+      id
+    }
     ttl
   }
   resolvers {
     id
-    domain
+    address
+    domain {
+      id
+    }
     resolverEvents {
       id
       node
-      resolver
       ... on AddrChanged {
-        address
+        a
       }
       ... on NameChanged {
         name

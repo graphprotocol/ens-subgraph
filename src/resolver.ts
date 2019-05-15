@@ -6,7 +6,6 @@ import {
   InterfaceChanged as InterfaceChangedEvent,
   NameChanged as NameChangedEvent,
   PubkeyChanged as PubkeyChangedEvent,
-  TextChanged as TextChangedEvent
 } from './types/Resolver/Resolver'
 
 import {
@@ -14,49 +13,43 @@ import {
   NameChanged,
   AbiChanged,
   PubkeyChanged,
-  TextChanged,
   ContenthashChanged,
   InterfaceChanged,
   AuthorisationChanged,
 } from './types/schema'
 
+import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
+
 export function handleAddrChanged(event: AddrChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new AddrChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new AddrChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
-  resolverEvent.address = event.params.a
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
+  resolverEvent.node = event.params.node
+  resolverEvent.a = event.params.a
   resolverEvent.save()
 }
 
 
 export function handleNameChanged(event: NameChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new NameChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new NameChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.name = event.params.name
   resolverEvent.save()
 }
 
 export function handleABIChanged(event: ABIChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new AbiChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new AbiChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.contentType = event.params.contentType
   resolverEvent.save()
 }
 
 export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new PubkeyChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new PubkeyChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.x = event.params.x
   resolverEvent.y = event.params.y
   resolverEvent.save()
@@ -64,45 +57,45 @@ export function handlePubkeyChanged(event: PubkeyChangedEvent): void {
 
 // Currently not in use - follow this issue for status - https://github.com/graphprotocol/graph-node/issues/913
 // export function handleTextChanged(event: TextChangedEvent): void {
-//   let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-//   let resolverEvent = new TextChanged(id)
-//   resolverEvent.resolver = event.address
+//   let resolverEvent = new TextChanged(createEventID(event.block.number, event.logIndex))
 //   resolverEvent.node = event.params.node
-//   resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+//   resolverEvent.resolverID = createResolverID(event.params.node, event.address)
 //   resolverEvent.indexedKey = event.params.indexedKey
 //   resolverEvent.key = event.params.key
 //   resolverEvent.save()
 // }
 
 export function handleContentHashChanged(event: ContenthashChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new ContenthashChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new ContenthashChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.hash = event.params.hash
   resolverEvent.save()
 }
 
 export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new InterfaceChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new InterfaceChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.interfaceID = event.params.interfaceID
   resolverEvent.implementer = event.params.implementer
   resolverEvent.save()
 }
 
 export function handleAuthorisationChanged(event: AuthorisationChangedEvent): void {
-  let id = event.block.number.toString().concat('-').concat(event.logIndex.toString())
-  let resolverEvent = new AuthorisationChanged(id)
-  resolverEvent.resolver = event.address
+  let resolverEvent = new AuthorisationChanged(createEventID(event.block.number, event.logIndex))
   resolverEvent.node = event.params.node
-  resolverEvent.resolverID = event.address.toHexString().concat('-').concat(event.params.node.toHexString())
+  resolverEvent.resolverID = createResolverID(event.params.node, event.address)
   resolverEvent.owner = event.params.owner
   resolverEvent.target = event.params.target
   resolverEvent.isAuthorized = event.params.isAuthorised
   resolverEvent.save()
+}
+
+function createEventID(blockNumber: BigInt, logIndex: BigInt): string {
+  return blockNumber.toString().concat('-').concat(logIndex.toString())
+}
+
+function createResolverID(node: Bytes, resolver: Address): string {
+  return resolver.toHexString().concat('-').concat(node.toHexString())
 }
